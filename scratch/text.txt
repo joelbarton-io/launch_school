@@ -1,0 +1,14 @@
+-Prompt
+-Store 1st
+-Check valid number?
+	no: 
+		return to beginning
+	yes: 
+		prompt
+		store 2nd
+		check valid number?
+			no:
+				return to prompt2
+			
+		
+	
