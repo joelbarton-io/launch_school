@@ -1,0 +1,27 @@
+
+
+goal: calculate mortgage (monthly payment) given information
+
+inputs: Loan Amount, Average Percentage Rate(APR),
+        Loan Duration (monthly)
+        
+      Loan Amount is either an Integer or a Float
+      APR is guaranteed a Float, likely need to use e-2
+      Duration should be in months, expressed as an integer
+      
+        
+processes: 
+
+a few prompts calls asking for user information.
+
+a few validation methods to make sure we are getting
+  the correct type of information in the correct format.
+  
+  
+main calculation after validations: 
+
+mortgage = Loan Amount times (APR / 1 - (1 + APR) ^ -Loan Duration)
+        
+output: Mortgage (monthly payment)
+
+
