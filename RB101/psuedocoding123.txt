@@ -1,0 +1,57 @@
+1. a method that returns the sum of two integers
+
+~casual~
+- START by intaking two integers (assume only valid inputs)
+- SET variable sum = integer1 plus integer2
+- PRINT sum variable
+
+_FORMAL_
+START (int1, int2)
+
+  # given two integers
+  SET number1 = int1
+  SET number2 = int2
+  SET sum = number1 + number2
+  PRINT sum
+
+END
+
+2. a method that takes an array of strings, and 
+   returns a string that is all those strings concatenated together
+   
+~casual~
+- our method gets an array filled with string elements 
+- it then appends all string elements into a single string argument
+- after this, it then returns the master string 
+
+_FORMAL_
+START([array, of, strings])
+  SET masterstring = '' 
+  LOOPING input array
+    append element to masterstring
+  END
+  PRINT masterstring
+END 
+
+
+3. a method that takes an array of integers, and returns a new 
+   array with every other element
+
+~casual~
+- our method intakes an array of integers
+- using an iterator method, we will filter out every other element 
+- then return our new array
+
+_FORMAL_
+
+START(arrayofintegers)
+  SET everyother = arrayofintegers LOOPING over 
+    if el index is odd
+      el
+    else 
+      next 
+  everyother is returned
+END
+
+
+
