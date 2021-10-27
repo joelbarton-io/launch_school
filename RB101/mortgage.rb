@@ -1,3 +1,5 @@
+# some methods! 
+
 def prompt(message) puts "=> #{message} " end
 
 def integer?(num) num.to_i.to_s == num end
@@ -12,8 +14,8 @@ def valid_loan?(loan_in_question)
   integer?(loan_in_question) || float?(loan_in_question)
 end
 
-def format_number(readable_num)
-  two_decimal_number = readable_num.round(2)
+def format_number(num)
+  two_decimal_number = num.round(2)
   whole, decimal = two_decimal_number.to_s.split(".")
   num_groups = whole.chars.to_a.reverse.each_slice(3)
   whole_with_commas = num_groups.map(&:join).join(',').reverse
@@ -22,11 +24,9 @@ end
 
 prompt("Welcome to the Mortgage Calculator!")
 
-loop do
+loop do # main loop
   
-  loan_amount = ''
-  loan_duration = ''
-  interest_rate = ''
+  loan_amount, loan_duration, interest_rate  = ''
   
   loop do
     prompt("What is your loan amount? $:")
@@ -50,22 +50,27 @@ loop do
     break if valid_rate?(interest_rate)
     prompt("Hmm...Invalid entry. Please enter a valid APR:")
   end
-  
+
   # format
+
   loan = loan_amount.to_f
   months = loan_duration.to_i * 12
   rate = (interest_rate.to_f / 100) / 12
   
   # calculate mortgage
-  mortgage = loan * (rate / (1 - (1 + rate)**(-months)))
+
+  mortgage = loan * 
+             (rate /
+             (1 - (1 + rate)**(-months)))
   
   # humanize nums
+
   humanized_mortgage = format_number(mortgage)
   
-  prompt("MORTGAGE: $#{humanized_mortgage}")
+  prompt("MONTHLY: $#{humanized_mortgage}")
   prompt("Calculate another mortgage? (Y/y)")
   do_over = gets.chomp
   
-  break prompt("Thank you for using me!  Goodbye!") if do_over.downcase != 'y'
-  prompt("Ready to calculate...")
+  break prompt("Thank you for using me!  Later!") if do_over.upcase.starts_with?('Y')
+  prompt("Ready to calculate another mortgage...")
 end
