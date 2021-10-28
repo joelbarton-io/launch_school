@@ -31,28 +31,30 @@
 
 #   ask if play again?
 # Code with INTENT
+VALID_ANSWERS = %w(r p s)
 
 def prompt(message) puts "=> #{message} " end
 
 def print_prompt(message) print "=> #{message} " end
 
-def valid?(answer, options)
-  options.include?(answer.downcase)
+def valid?(answer)
+  VALID_ANSWERS.include?(answer.downcase)
 end
 
-def computer_chooses(options)
-  options.sample()
-end
+# def computer_chooses(options)
+#   options.sample()
+# end
 
 def compare(name, user, computer)
   return "Huh, it's a tie" if user == computer
-  return "#{name} " if user == 'p' && computer == 'r'
-  return "#{name} " if user == 'r' && computer == 's'
-  return "#{name} " if user == 's' && computer == 'p'
 
-  return 'Computer' if computer == 'p' && user == 'r'
-  return 'Computer' if computer == 'r' && user == 's'
-  return 'Computer' if computer == 's' && user == 'p'
+  return "#{name} " if user == 'p' && computer == 'r' ||
+  user == 'r' && computer == 's' ||
+  user == 's' && computer == 'p'
+
+  return 'Computer' if computer == 'p' && user == 'r' ||
+  computer == 'r' && user == 's'
+  computer == 's' && user == 'p'
 end
 
 def greet
@@ -65,25 +67,21 @@ def get_name
   gets.chomp.capitalize()
 end
 
-def game(user_name)
-  valid_answers = %w(r p s)
+greet()
+user_name = get_name()
 
-  loop do
-    print_prompt("Your move, #{user_name}! \n r -> rock \n p -> paper \n s -> scissors \n =>")
-    user_input = gets.chomp()
-    next prompt("INVALID USER INPUT!!!") unless valid?(user_input, valid_answers)
+loop do
+  print_prompt("Your move, #{user_name}! \n r -> rock \n p -> paper \n s -> scissors \n =>")
+  user_input = gets.chomp()
+  next prompt("INVALID USER INPUT!!!") unless valid?(user_input)
 
-    computer_choice = computer_chooses(valid_answers)
-    prompt("computer's choice: #{computer_choice}")
-    prompt("And the winner is... #{compare(user_name, user_input, computer_choice)}")
+  computer_choice = VALID_ANSWERS.sample
+  prompt("computer's choice: #{computer_choice}")
+  prompt("And the winner is... #{compare(user_name, user_input, computer_choice)}")
 
-    prompt("Play again? Type 'y'")
-    play_again = gets.chomp.downcase()
-    play_again == 'y' ? next : break
-  end
-  prompt("#{user_name} has exited the game.")
+  prompt("Play again? Type 'y'")
+  play_again = gets.chomp.downcase()
+  play_again == 'y' ? next : break
 end
 
-greet()
-name = get_name()
-game(name)
+prompt("#{user_name} has exited the game.")
