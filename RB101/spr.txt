@@ -1,0 +1,35 @@
+# game flow
+
+# the user makes a choice
+# the computer makes a choice
+# the winner is displayed
+
+# Problem 
+#   input => rock, or paper, or scissors from user
+#   output => winner's name is displayed 
+
+# Examples/Test Cases
+#   user inputs: rock
+#   computer makes move: is paper
+#   displays message that user won round
+
+# Data Structure
+#   array with options for computer
+#   basic variable storage 
+
+# Algorithm
+#   prompt user
+#   store choice, validate
+#     if valid => break
+#     else => display error message, next
+
+#   computer selection
+#   store choice
+
+#   compare user and computer choices
+#   output winner
+
+#   ask if play again?
+
+
+# Code with INTENT

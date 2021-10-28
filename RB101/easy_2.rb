@@ -9,11 +9,13 @@ def format_number(num)
   [whole_with_commas, decimal].compact.join(".")
 end
 
+# should deconstruct this method, i don't quite understand its logic and 
+# would like to have a better understanding of &:method implementation.
+
 # 1 Random number
 # teddy_age = Array(20..200).sample
 # teddy_age = rand(20..200)
 # teddy_age = %w(1..200)
-# teddy_age = Array.new(20)
 # teddy_age = (20..200).lazy.first(182)
 # puts teddy_age
 # FE
@@ -124,7 +126,7 @@ end
 # Algorithm
 # ask for int and operation
 # if sum, add nums 1-input
-# if prod, mult nums input!
+# if prod, input!
 
 # DS => none, unless we choose to generate an array
 
