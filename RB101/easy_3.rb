@@ -19,21 +19,23 @@
 
 # Code
 
-order = %w(1st 2nd 3rd 4th 5th last).freeze
-stored_numbers = []
 
-order.each do |el|
-  puts "Enter the #{el} number: "
-  stored_numbers.push(gets.chomp.to_i)
-end
+# order = %w(1st 2nd 3rd 4th 5th last).freeze
+# stored_numbers = []
 
-last_number = stored_numbers.pop()
+# order.each do |el|
+#   puts "Enter the #{el} number: "
+#   stored_numbers.push(gets.chomp.to_i)
+# end
 
-if stored_numbers.include? last_number
-  puts "The number #{last_number} appears in #{stored_numbers}."
-else
-  puts "The number #{last_number} does not appear in #{stored_numbers}."
-end
+# last_number = stored_numbers.pop()
+
+# if stored_numbers.include? last_number
+#   puts "The number #{last_number} appears in #{stored_numbers}."
+# else
+#   puts "The number #{last_number} does not appear in #{stored_numbers}."
+# end
+
 
 # 2.
 # Problem
@@ -52,13 +54,43 @@ end
 # Code
 
 
+# operations_array = %i(+ - * / % **)
+
+# puts "=> Enter the first number:"
+# first = gets.chomp.to_f
+# puts "=> Enter the second number:"
+# second = gets.chomp.to_f
+
+# operations_array.each do |operation|
+#   result =  [first, second].inject(operation).round(2)
+#   puts "#{first} #{operation} #{second} = #{result}"
+# end
+
 
 # 3.
 # Problem
+#   i: string
+#   o: string
+
 # Examples
+# ..
+
 # Data Structures
+#   array
+
 # Algorithm
+#   prompt user for string
+#   store string in variable
+#   split, join, size string and store in new variable
+#   print to screen a message
+
 # Code
+
+# puts "Please write word or multiple words: "
+# phrase = gets.chomp
+# length = phrase.split.join.size
+# puts "There are #{length} characters in #{phrase}"
+
 
 # 4.
 # Problem
@@ -67,6 +99,15 @@ end
 # Algorithm
 # Code
 
+# array_1 = [1,2,3,4,5]
+# p array_1
+# array_2 = array_1 * 2
+# p array_2
+
+# puts array_1.object_id
+# puts array_2.object_id
+
+
 # 5.
 # Problem
 # Examples
@@ -74,19 +115,71 @@ end
 # Algorithm
 # Code
 
+# def multiply(num1, num2)
+#   num1 * num2
+# end
+
+# def to_the_nth(number, nth = 1)
+#   multiply(number, 1) ** nth
+# end
+
+# puts result
+
 # 6.
 # Problem
+#   i: two arguments, either truthy or falsey
+#   o: true or false
 # Examples
 # Data Structures
 # Algorithm
 # Code
 
+
+
+# def xor?(arg1, arg2)
+#   if arg1
+#     if arg2
+#       false
+#     elsif !arg2
+#       true
+#     end
+#   else # implicitly arg1 is falsey
+#     if arg2
+#       true
+#     elsif !arg2
+#       false
+#     end
+#   end
+# end
+
+
+# def xor?(arg1, arg2)
+#   arg1 != arg2
+# end
+
+# def xor?(bool1, bool2)
+#   [bool1, bool2].uniq.size == 2
+# end
+
+
 # 7.
 # Problem
+#   i: int array
+#   o: array of odd elements
 # Examples
 # Data Structures
 # Algorithm
 # Code
+
+def oddities(init_array)
+  out_array = []
+  init_array.each do |el|
+    out_array.push(el) if init_array.index(el).even?
+  end
+  out_array
+end
+
+p oddities([12,2,"a",4,5, nil])
 
 # 8.
 # Problem

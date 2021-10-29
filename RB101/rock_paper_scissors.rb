@@ -41,8 +41,7 @@ def valid?(answer)
   VALID_ANSWERS.include?(answer.downcase)
 end
 
-# def computer_chooses(options)
-#   options.sample()
+# def win?(first, second)
 # end
 
 def compare(name, user, computer)
