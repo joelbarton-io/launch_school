@@ -171,22 +171,64 @@
 # Algorithm
 # Code
 
-def oddities(init_array)
-  out_array = []
-  init_array.each do |el|
-    out_array.push(el) if init_array.index(el).even?
-  end
-  out_array
-end
+# def oddities(array)
+#   out_array = []
+#   array.each_with_index do |el, idx|
+#     out_array.push(el) if idx.even?
+#   end
+#   puts " #{array} => #{out_array}"
+# end
 
-p oddities([12,2,"a",4,5, nil])
+# def oddities(array)
+#   odds = []
+#   index = 0
+#   while index < array.length
+#     odds.push(array[index])
+#     index += 2
+#   end
+#   odds
+# end
+
+# print oddities([12,2,"a",4,5, nil])
 
 # 8.
 # Problem
+#   i: string
+#   o: boolean true or false
+
 # Examples
 # Data Structures
 # Algorithm
+#   pass in string arg
+#
 # Code
+
+# def palindrome?(word)
+
+#   front = 0
+#   back = word.length-1
+#   is_palindrome = true
+
+#   while back > front
+#     break is_palindrome = false if word[front] != word[back]
+#     front += 1
+#     back -= 1
+#   end
+#   is_palindrome
+# end
+
+
+# def palindrome?(string)
+#   string == string.reverse
+# end
+
+
+def palindrome?(string)
+  # string.downcase.gsub(/[^0-9a-z ]/i, '')
+  string == string.reverse
+end
+
+# puts palindrome?('joel,,s,,,,leosj')
 
 # 9.
 # Problem
@@ -195,6 +237,11 @@ p oddities([12,2,"a",4,5, nil])
 # Algorithm
 # Code
 
+def palindromic_number?(numbers)
+  palindrome?(numbers.to_s)
+end
+
+puts palindromic_number?(1234545434321)
 # 10.
 # Problem
 # Examples
