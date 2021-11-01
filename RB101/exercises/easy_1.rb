@@ -2,14 +2,14 @@
 
 def repeat(str, pos_int)
   pos_int.times {puts str}
-end 
+end
 # repeat("joel", 5)
 
 #2
 
 def odd?(int)
   int%2 == 1
-end 
+end
 
 # odd?(3)
 
@@ -17,12 +17,12 @@ end
 
 # def digit_list(int)
 #   int.to_s.split('').map {|el| el.to_i}
-# end 
+# end
 
 # or
 def digit_list(int)
   int.to_s.split('').map(&:to_i)
-end 
+end
 
 # p digit_list(12345)
 
@@ -39,18 +39,18 @@ end
 #   garage = Hash.new
 #   i = 0
 #   until i == input.length
-#     garage.include?(input[i]) ? garage[input[i]] += 1 : garage[input[i]] = 1 
+#     garage.include?(input[i]) ? garage[input[i]] += 1 : garage[input[i]] = 1
 #     i+=1
-#   end 
+#   end
 #   garage
-# end 
+# end
 
 def count_occ(array)
   array.map(&:downcase!)
   garage = Hash.new(0)
   array.each { |el| garage.include?(el) ? garage[el] += 1 : garage[el] = 1}
   garage.each { |k, v| puts "#{k} => #{v}"}
-end 
+end
 
 vehicles = [
   'car', 'car', 'truck', 'cAr', 'SUV', 'truck',
@@ -59,11 +59,11 @@ vehicles = [
 
 # count_occ(vehicles)
 
-#5 
+#5
 
 def reverse_sentence(string)
   string.split.reverse.join(' ')
-end 
+end
 
 # puts reverse_sentence('Hello World') == 'World Hello'
 # puts reverse_sentence('Reverse these words') == 'words these Reverse'
@@ -74,21 +74,21 @@ end
 
 def reverse_words(word)
   word.split.map { |el| el.length >= 5 ? el.reverse : el }.join(' ')
-end 
+end
 
 # p reverse_words("Joel Barton Mahoney")
 
-#7 
+#7
 
 # def stringy(num, start = 1)
 #   out = ""
 #   num.times do
 #     case start
-#     when 1 
-#       out.length.even? ? out << "1" : out << "0" 
-#     else 
-#       !out.length.even? ? out << "1" : out << "0" 
-#     end 
+#     when 1
+#       out.length.even? ? out << "1" : out << "0"
+#     else
+#       !out.length.even? ? out << "1" : out << "0"
+#     end
 #   end˜
 #   out
 # end
@@ -97,11 +97,11 @@ def stringy(num, start = 1)
   out = ""
   num.times do
     case start
-    when 1 
-      out.length.even? ? out << "1" : out << "0" 
-    else 
-      out.length.odd? ? out << "1" : out << "0" 
-    end 
+    when 1
+      out.length.even? ? out << "1" : out << "0"
+    else
+      out.length.odd? ? out << "1" : out << "0"
+    end
   end
   out
 end
@@ -115,7 +115,7 @@ end
 
 def average(numbers_array)
   (numbers_array.sum / numbers_array.length).to_f
-end 
+end
 
 # puts average([1, 5, 87.3, 45, 8, 8])
 # puts average([1, 6]) == 3 # integer division: (1 + 6) / 2 -> 3
@@ -129,7 +129,7 @@ end
 # then, get sum and return
 def sum(number)
   number.to_s.chars.map(:to_i).reduce(:+)
-end 
+end
 
 # p sum(345)
 
@@ -137,7 +137,7 @@ end
 
 def calculate_bonus(sal, get_bonus)
   get_bonus ? sal/2 : 0
-end 
+end
 # puts calculate_bonus(2800, true) == 1400
 # puts calculate_bonus(1000, false) == 0
 # puts calculate_bonus(50000, true) == 25000
