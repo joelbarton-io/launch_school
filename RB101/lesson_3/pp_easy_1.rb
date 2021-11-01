@@ -29,16 +29,29 @@
   # .delete(x) deletes x amount of elements starting at index 0 (beginning)
 
 # Q. 5
-# puts (10..100).include?(42)
+  # puts (10..100).include?(42)
 
-# # OR
+  # # OR
 
-# puts (10..100).cover?(42)
+  # puts (10..100).cover?(42)
 
-# Q. 6
-
+# Q.
+  # famous_words = "seven years ago..."
+  # puts famous_words.prepend('Four score and ')
+  # or << or +
 
 # Q. 7
+
+  # flintstones = ["Fred", "Wilma"]
+  # flintstones << ["Barney", "Betty"]
+  # flintstones << ["BamBam", "Pebbles"]
+
+  # flintstones.flatten!
+
 # Q. 8
-# Q. 9
-# Q. 10
+  # flintstones = { "Fred" => 0, "Wilma" => 1, "Barney" => 2, "Betty" => 3, "BamBam" => 4, "Pebbles" => 5 }
+
+  # just_barney = flintstones.to_a[2]
+  # p just_barney
+  # OR flintstones.assoc("Barney")
+
