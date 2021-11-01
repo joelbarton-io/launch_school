@@ -4,9 +4,9 @@
 # the computer makes a choice
 # the winner is displayed
 
-# Problem 
+# Problem
 #   input => rock, or paper, or scissors from user
-#   output => winner's name is displayed 
+#   output => winner's name is displayed
 
 # Examples/Test Cases
 #   user inputs: rock
@@ -15,7 +15,7 @@
 
 # Data Structure
 #   array with options for computer
-#   basic variable storage 
+#   basic variable storage
 
 # Algorithm
 #   prompt user
@@ -30,6 +30,5 @@
 #   output winner
 
 #   ask if play again?
-
 
 # Code with INTENT
