@@ -126,33 +126,112 @@
 # Algorithm
 # Code
 
-def running_total(init)
-  output = []
+# def running_total(init)
+#   output = []
 
-  init.each_index do |index|
-    break if init.empty?
+#   init.each_index do |index|
+#     break if init.empty?
 
-    next output.push(init[index]) if index == 0
-    curr = init[index]
-    prev = output[index-1]
-    output.push(curr + prev)
-  end
+#     next output.push(init[index]) if index == 0
+#     curr = init[index]
+#     prev = output[index-1]
+#     output.push(curr + prev)
+#   end
 
-  output
-end
+#   output
+# end
 
-# running_total([2, 5, 13]) == [2, 7, 20]
-# running_total([14, 11, 7, 15, 20]) == [14, 25, 32, 47, 67]
-# running_total([3]) == [3]
-# running_total([]) == []
+# def running_total(init)
+#   curr_total = 0
+#   output = init.map { |el| curr_total += el }
+# end
+
 # 7.
 # Problem
-  # i: array of numbers
-  # o: modified array of numbers
-# Example
-# Data Structure => arrays
+  # i: string
+  # o: integer
+# Examples
+  # string_to_integer('4321') == 4321
+  # string_to_integer('570') == 570
+
+# Data Structure => maybe an array cache of acceptable values
 # Algorithm
+  # initialize two arrays, one containing integer values, the other string counterparts
+  # split input into strings
+  # iterate across new array
+    # check if element is in string counterparts array (index of?)
+    # pass that index to integer value array and select appropriate value
+    # push that value to output array
+    # reduce
 # Code
+
+# STRINGS = %w(0 1 2 3 4 5 6 7 8 9)
+# INTEGERS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+# def negate(our_integer) # returns -value
+#   -our_integer
+# end
+
+# def string_to_integer(our_string)
+#   our_string_array = our_string.split('')
+
+#   sign = our_string_array.shift if our_string_array[0] == '-' || our_string_array[0] == '+'
+
+#   integer_array = our_string_array.map { |el| INTEGERS[STRINGS.index(el)] }
+#   our_output = integer_array.reduce {|accum, curr| accum*10 + curr }
+
+#   sign.nil? || sign == '+' ? our_output : negate(our_output)
+# end
+
+# p string_to_integer('-1234')
 # 8.
+
+# STRINGS = %w(0 1 2 3 4 5 6 7 8 9)
+# INTEGERS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+# def negate(our_integer) # returns -value
+#   -our_integer
+# end
+
+# def string_to_integer(our_string)
+#   our_string_array = our_string.split('')
+
+#   sign = our_string_array.shift if our_string_array[0] == '-' || our_string_array[0] == '+'
+
+#   integer_array = our_string_array.map { |el| INTEGERS[STRINGS.index(el)] }
+#   our_output = integer_array.reduce {|accum, curr| accum*10 + curr }
+
+#   sign.nil? || sign == '+' ? our_output : negate(our_output)
+# end
+
+# p string_to_integer('-1234')
 # 9.
+
+# how do we iterate across
+# number = 1234
+
+
+# p string
+
+# STRINGS = %w(0 1 2 3 4 5 6 7 8 9)
+
+# def integer_to_string(integer)
+#   string = "#{number}"
+# end
+
+
+def integer_to_string(integer)
+  inverted_integer_array = integer.digits
+  integer_array = inverted_integer_array.reverse!
+  string = ""
+  integer_array.each { |el|  }
+  string
+end
+
+p integer_to_string(1234)
+
 # 10.
+
+
+# print integers.inject{|initial,i| a*10 + i}
+# string_to_integer('asdf')
