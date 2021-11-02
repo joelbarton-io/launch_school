@@ -45,7 +45,7 @@
 
 # 3.
 
-# rules:
+# Rules:
   # leap year occur every year that is perfectly divisible by 4,
     # unless that year is also perfectly divisible by 100
     # in this case it is not a leap year
@@ -86,9 +86,61 @@
 # end
 
 # 4.
+# Problem
+  # i: num
+  # o: sum of multiples up to num
+# Example/test
+  # i = 15
+  # [3,5,9,10,12,15] . sum
+  # o = 54
+
+# Data structure
+  # array
+# Algorithm
+  # START
+  # initialize storage array
+  # starting from 1... up to input
+    # is multiple of 3 or 5 ?
+      # plop in storage
+      # otherwise, go next
+  # sum up elements in our storage array
+  # return that sum
+
+
+# Code
+# def multisum(input, storage = [])
+
+#   (1..input).each do |number|
+#     storage.push(number) if (number % 5).zero? || (number % 3).zero?
+#   end
+
+#   storage.inject(:+)
+# end
 
 # 5.
-# 6.
+# Problem
+  # i: array of numbers
+  # o: modified array of numbers
+# Example
+# Data Structure => arrays
+# Algorithm
+  #
+# Code
+
+def running_total(init)
+  output = []
+  return output if init.empty?
+
+
+  init.each_index do |index|
+    output << init[0] if index == 0
+
+    output.push(init[1] + output[0])
+  end
+  output
+end
+
+puts running_total([2, 5, 13])
 # 7.
 # 8.
 # 9.
