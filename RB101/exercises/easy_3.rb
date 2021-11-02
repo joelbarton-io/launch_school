@@ -237,11 +237,11 @@ end
 # Algorithm
 # Code
 
-def palindromic_number?(numbers)
-  palindrome?(numbers.to_s)
-end
+# def palindromic_number?(numbers)
+#   palindrome?(numbers.to_s)
+# end
 
-puts palindromic_number?(1234545434321)
+# puts palindromic_number?(1234545434321)
 # 10.
 # Problem
 # Examples
