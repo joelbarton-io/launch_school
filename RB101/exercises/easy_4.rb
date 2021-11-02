@@ -124,24 +124,35 @@
 # Example
 # Data Structure => arrays
 # Algorithm
-  #
 # Code
 
 def running_total(init)
   output = []
-  return output if init.empty?
-
 
   init.each_index do |index|
-    output << init[0] if index == 0
+    break if init.empty?
 
-    output.push(init[1] + output[0])
+    next output.push(init[index]) if index == 0
+    curr = init[index]
+    prev = output[index-1]
+    output.push(curr + prev)
   end
+
   output
 end
 
-puts running_total([2, 5, 13])
+# running_total([2, 5, 13]) == [2, 7, 20]
+# running_total([14, 11, 7, 15, 20]) == [14, 25, 32, 47, 67]
+# running_total([3]) == [3]
+# running_total([]) == []
 # 7.
+# Problem
+  # i: array of numbers
+  # o: modified array of numbers
+# Example
+# Data Structure => arrays
+# Algorithm
+# Code
 # 8.
 # 9.
 # 10.
