@@ -127,6 +127,7 @@ def dot_separated_ip_address?(input_string)
 end
 
 p dot_separated_ip_address?('10.4.5.00')
+
 # i: string of ints and dots
 # o: t/f
 
