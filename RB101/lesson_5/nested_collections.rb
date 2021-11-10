@@ -295,25 +295,45 @@ arr = [{a: [1, 2, 3]}, {b: [2, 4, 6], c: [3, 6], d: [4]}, {e: [8], f: [6, 10]}]
 
 # 1 separate subroutine that we can call with a length parameter
 
-HEXIDECIMAL_VALUES = %w(0 1 2 3 4 5 6 7 8 9 a b c d e f)
+# HEXIDECIMAL_VALUES = %w(0 1 2 3 4 5 6 7 8 9 a b c d e f)
 
-def generate(n)
-  string = ''
-  until string.size == n do
-    string << HEXIDECIMAL_VALUES.sample
-  end
-  string 
-end 
+# def generate(n)
+#   string = ''
+#   until string.size == n do
+#     string << HEXIDECIMAL_VALUES.sample
+#   end
+#   string 
+# end 
 
-def generate_UUID ()
+# def generate_UUID ()
 
-  eight = generate(8)
-  four_1st = generate(4)
-  four_2nd = generate(4)
-  four_3rd = generate(4)
-  twelve = generate(12)
+#   eight = generate(8)
+#   four_1st = generate(4)
+#   four_2nd = generate(4)
+#   four_3rd = generate(4)
+#   twelve = generate(12)
   
-  [eight, four_1st, four_2nd, four_3rd, twelve].join('-')
+#   [eight, four_1st, four_2nd, four_3rd, twelve].join('-')
+# end 
+
+# p generate_UUID
+
+
+# improved: 
+
+def generate_UUID
+  numbers = [8, 4, 4, 4, 12]
+  hex = %w(0 1 2 3 4 5 6 7 8 9 a b c d e f)
+  array = Array.new
+
+  numbers.each do |num|
+    string = ''
+    num.times do 
+      string << hex.sample
+    end 
+    array << string
+  end
+  array.join('-')
 end 
 
 p generate_UUID
