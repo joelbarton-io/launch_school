@@ -12,23 +12,31 @@ def show_board(brd)
   puts "-----+-----+-----"
   puts "  #{brd[7]}  |  #{brd[8]}  |  #{brd[9]}  "
 end
+
 def initialize_board
   new_board = (1..9).each_with_object({}) do |num, hsh|
     hsh[num] = " "
   end
   new_board
 end
-def instructional_board
+
+def example_board
   new_board = (1..9).each_with_object({}) do |num, hsh|
     hsh[num] = num
   end
   new_board
 end
-def prompt(message) puts ">>> #{message}" end
-def play_again?(answer) answer == "y" end
+
+def prompt(message)
+  puts ">>> #{message}"
+end
+
+def play_again?(answer)
+  answer == "y"
+end
 
 def insert_break
-  0.upto(5) { |el| puts '.'*el }
+  0.upto(5) { puts '.' }
   puts ""
 end
 
@@ -37,7 +45,8 @@ def continue? # => t/f
   answer = gets.chomp
   answer == ""
 end
-def generate_computer_move(curr_board, number = 0)
+
+def generate_computer_move(curr_board, number = nil)
   loop do
     number = (1..9).to_a.sample
     next if curr_board[number] == USER || curr_board[number] == COMPUTER
@@ -46,47 +55,50 @@ def generate_computer_move(curr_board, number = 0)
   number
 end
 
-def generate_player_move(curr_board, user_input = 0)
+def valid_user_input?(input) # => t/f
+  (1..9).to_a.include?(input)
+end
+
+def player_move!(curr_board, user_input = nil)
   loop do
-    prompt("enter a number between 1 and 9")
+    prompt("INPUT a number to claim a square!")
     user_input = gets.chomp.to_i
+    next prompt("invalid input") unless valid_user_input?(user_input)
+
     if curr_board[user_input] == USER || curr_board[user_input] == COMPUTER
-      prompt("box #{user_input} is already populated!")
-      next
+      next prompt("box #{user_input} is already populated!")
     end
     break system("clear")
   end
   user_input
 end
 
-def a_win?(board_state, symbol) # this is my most opaque method, i think. returns => t/f
+def a_win?(board_state, symbol) # => t/f
   same_symbol = Proc.new { |el| board_state[el] == symbol }
   result = (1..8).any? { |number| WIN_CONDITIONS[number].all?(&same_symbol) }
   result
 end
 
 loop do
+  system("clear")
+  prompt("    lets   ")
+  prompt("  <[play]> ")
+  prompt("Tic-Tac-Toe")
   puts ""
-  prompt("    play    ")
-  puts ""
-  prompt(" tic-tac-toe")
-  insert_break()
   system("clear") if continue?()
 
   board = initialize_board()
-  prompt("this here grid is our board...")
+  prompt("with a grid as our board...")
   puts ""
   show_board(board)
-  insert_break()
-  prompt("just a simple 3 x 3 grid...")
   puts ""
   system("clear") if continue?()
 
-  prompt("each DIGIT corresponds to a SQUARE...")
+  prompt("and DIGITS as SQUARES...")
   puts ""
-  board = instructional_board
+  board = example_board
   show_board(board)
-  insert_break()
+  puts ""
   system("clear") if continue?()
 
   rounds_played = 0
@@ -94,13 +106,12 @@ loop do
   insert_break()
   next system("clear") unless continue?()
 
-
   loop do
     system("clear")
     board = initialize_board()
 
     loop do
-      player_move = generate_player_move(board)
+      player_move = player_move!(board)
       board[player_move] = USER
 
       break prompt("user wins!") if a_win?(board, USER)
