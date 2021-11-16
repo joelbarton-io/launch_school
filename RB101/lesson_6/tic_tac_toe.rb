@@ -3,7 +3,10 @@ WIN_CONDITIONS = {
   4 => [1, 4, 7], 5 => [2, 5, 8], 6 => [3, 6, 9],
   7 => [1, 5, 9], 8 => [3, 5, 7]
 }
+
 USER, COMPUTER = "x", "o"
+
+SCORE = {:user=> 0, :computer=> 0}
 
 def show_board(brd)
   puts "  #{brd[1]}  |  #{brd[2]}  |  #{brd[3]}  "
@@ -64,21 +67,25 @@ def player_move!(curr_board, user_input = nil)
     prompt("INPUT a number to claim a square!")
     user_input = gets.chomp.to_i
     next prompt("invalid input") unless valid_user_input?(user_input)
+    next prompt("box #{user_input} is already populated!") if curr_board[user_input] == USER ||
+    curr_board[user_input] == COMPUTER
 
-    if curr_board[user_input] == USER || curr_board[user_input] == COMPUTER
-      next prompt("box #{user_input} is already populated!")
-    end
     break system("clear")
   end
   user_input
 end
 
-def a_win?(board_state, symbol) # => t/f
+def a_win?(board_state, symbol) # this is my most opaque method, i think. returns => t/f
   same_symbol = Proc.new { |el| board_state[el] == symbol }
   result = (1..8).any? { |number| WIN_CONDITIONS[number].all?(&same_symbol) }
   result
 end
 
+def five_wins?(score)
+  score.any? do |_k, v|
+    v >= 5
+  end
+end
 loop do
   system("clear")
   prompt("    lets   ")
@@ -101,20 +108,25 @@ loop do
   puts ""
   system("clear") if continue?()
 
-  rounds_played = 0
   prompt("Care to play?")
   insert_break()
   next system("clear") unless continue?()
 
+  rounds_played = 0
   loop do
     system("clear")
+    # prompt("#{score}")
     board = initialize_board()
 
     loop do
+      prompt("score: #{SCORE[:user]}-#{SCORE[:computer]}")
       player_move = player_move!(board)
       board[player_move] = USER
 
-      break prompt("user wins!") if a_win?(board, USER)
+      if a_win?(board, USER)
+        SCORE[:user] += 1
+        break prompt("user wins!")
+      end
       break prompt("draw!") if board.all? { |_k, v| v == USER || v == COMPUTER }
 
       computers_move = generate_computer_move(board)
@@ -122,11 +134,15 @@ loop do
       prompt("computer chose square #{computers_move}")
       show_board(board)
 
-      break prompt("computer wins!") if a_win?(board, COMPUTER)
+      if a_win?(board, COMPUTER)
+        SCORE[:computer] += 1
+        break prompt("computer wins!")
+      end
       break prompt("it's a draw!") if board.all? { |_k, v| v == USER || v == COMPUTER }
     end
 
     rounds_played += 1
+    break prompt("final score: #{SCORE[:user]}-#{SCORE[:computer]}")if five_wins?(SCORE)
     prompt("rounds played: #{rounds_played}")
     prompt("play another? (y/n)")
     user_decision = gets.chomp.downcase
