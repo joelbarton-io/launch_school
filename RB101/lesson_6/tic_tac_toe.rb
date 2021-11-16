@@ -1,3 +1,5 @@
+# constants
+
 WIN_CONDITIONS = {
   1 => [1, 2, 3], 2 => [4, 5, 6], 3 => [7, 8, 9],
   4 => [1, 4, 7], 5 => [2, 5, 8], 6 => [3, 6, 9],
@@ -5,6 +7,7 @@ WIN_CONDITIONS = {
 }
 
 # helper methods
+
 def show_board(brd)
   puts "  #{brd[1]}  |  #{brd[2]}  |  #{brd[3]}  "
   puts "-----+-----+-----"
@@ -65,40 +68,47 @@ end
 
 def greet
   puts ""
-  puts "this is"
-  puts "."
-  puts ".."
-  puts "..."
-  puts "... tic-tac-toe"
-  puts "..."
-  puts ".."
-  puts "."
-  puts "welcome"
+  prompt("      welcome      ")
+  puts ""
+  prompt("this is tic-tac-toe")
   puts ""
 end
 
 def instructions
   board = blank_board()
-  prompt("this 3x3 grid is our board...")
+  prompt("this grid is our board...")
   puts "..."
+  puts ""
   show_board(board)
   puts "..."
-  prompt("each grid square corresponds with a digit...")
+  puts ""
+  prompt("digits correspond to squares...")
   puts "..."
+  puts ""
   board = initialize_instructional_board
   show_board(board)
   puts "..."
-  prompt("to start playing...")
+  puts ""
+  prompt("now that we know how to play...")
+  prompt("press enter to begin playing, or any key to exit")
+  answer = gets.chomp
+  answer
 end
 
+def continue? # t/f
+  prompt("press enter to begin playing, or any key to exit game")
+  answer = gets.chomp
+  answer == ""
+end
 # game
 
 loop do
   greet()
-  prompt("tap your spacebar and press enter to begin...or any key to exit")
-  break if gets.chomp != ' '
-  system("clear")
-  instructions()
+  if continue?
+    system("clear")
+    instructions()
+    system("clear")
+  end
   rounds_played = 0
 
   loop do
@@ -111,7 +121,7 @@ loop do
       break prompt("user wins!") if win?(board, "x")
       break prompt("draw!") if board.all? { |_k, v| v == "x" || v == "o" }
 
-      prompt("computer is 'thinking'...")
+      # prompt("computer is 'thinking'...")
       computers_move = generate_computer_move(board)
       board[computers_move] = "o"
       prompt("computer chose square #{computers_move}")
