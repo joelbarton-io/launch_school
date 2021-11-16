@@ -65,64 +65,72 @@ end
 
 def greet
   puts ""
-  puts "This is"
+  puts "this is"
   puts "."
   puts ".."
   puts "..."
-  puts "... Tic-Tac-Toe"
+  puts "... tic-tac-toe"
   puts "..."
   puts ".."
   puts "."
-  puts "Welcome!"
+  puts "welcome"
   puts ""
 end
 
 def instructions
-  board = initialize_instructional_board
-  prompt("The 3x3 grid displayed below represents a classic tic-tac-toe board")
-  puts "..."
-  prompt("Each grid square corresponds with a digit")
+  board = blank_board()
+  prompt("this 3x3 grid is our board...")
   puts "..."
   show_board(board)
   puts "..."
-  prompt("to begin...")
+  prompt("each grid square corresponds with a digit...")
+  puts "..."
+  board = initialize_instructional_board
+  show_board(board)
+  puts "..."
+  prompt("to start playing...")
 end
 
 # game
 
-greet()
-instructions()
-rounds_played = 0
-
 loop do
-  board = blank_board()
+  greet()
+  prompt("tap your spacebar and press enter to begin...or any key to exit")
+  break if gets.chomp != ' '
+  system("clear")
+  instructions()
+  rounds_played = 0
 
   loop do
-    player_move = generate_player_move(board)
-    board[player_move] = "x"
+    board = blank_board()
 
-    break prompt("user wins!") if win?(board, "x")
-    break prompt("draw!") if board.all? { |_k, v| v == "x" || v == "o" }
+    loop do
+      player_move = generate_player_move(board)
+      board[player_move] = "x"
 
-    prompt("computer is 'thinking'...")
-    computers_move = generate_computer_move(board)
-    board[computers_move] = "o"
-    prompt("computer chose square #{computers_move}")
-    show_board(board)
+      break prompt("user wins!") if win?(board, "x")
+      break prompt("draw!") if board.all? { |_k, v| v == "x" || v == "o" }
 
-    break prompt("computer wins!") if win?(board, "o")
-    break prompt("it's a draw!") if board.all? { |_k, v| v == "x" || v == "o" }
+      prompt("computer is 'thinking'...")
+      computers_move = generate_computer_move(board)
+      board[computers_move] = "o"
+      prompt("computer chose square #{computers_move}")
+      show_board(board)
+
+      break prompt("computer wins!") if win?(board, "o")
+      break prompt("it's a draw!") if board.all? { |_k, v| v == "x" || v == "o" }
+    end
+
+    rounds_played += 1
+    prompt("rounds played: #{rounds_played}")
+    prompt("play another? (y/n)")
+    user_decision = gets.chomp.downcase
+    system("clear")
+
+    next prompt("queueing up another round...") if play_again?(user_decision)
+    break prompt("exiting now...")
   end
-
-  rounds_played += 1
-  prompt("rounds played: #{rounds_played}")
-  prompt("play another? (y/n)")
-  user_decision = gets.chomp.downcase
-  system("clear")
-
-  next prompt("queueing up another round...") if play_again?(user_decision)
-  break prompt("exiting now...")
+  break
 end
-
 puts "..."
 prompt("the game has now exited")
