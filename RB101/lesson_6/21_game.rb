@@ -1,15 +1,32 @@
 def prompt(msg)
-  puts ">>> #{msg}"
+  puts "> #{msg}"
+end
+
+def delayed_clear(want_dots = true, want_clear = true)
+  sleep(1)
+  puts ""
+  if want_dots
+    15.times do
+      sleep(0.1)
+      print "."
+    end
+    sleep(1.2)
+    puts ""
+  end
+  if want_clear
+    system("clear")
+    # sleep(1)
+  end
 end
 
 def make_suit
   one_suit = (2..10).each_with_object({}) do |num, hsh|
     hsh[num.to_s] = num
   end
-  ["jack", "queen", "king"].each do |el|
+  ["Jack", "Queen", "King"].each do |el|
     one_suit[el] = 10
   end
-  one_suit["ace"] = 11   #some_method(curr_total of hand) =>returns either 1 or 11
+  one_suit["Ace"] = 11   #some_method(curr_total of hand) =>returns either 1 or 11
   one_suit
 end
 
@@ -48,12 +65,12 @@ def calculate_total(hand, total = 0)
   ace_count > 1 ? total - (10 * (ace_count - 1)) : total
 end
 
-def display_both_hands(dealer_hand, user_hand)
-  prompt("Dealer has a #{dealer_hand[0][0]} and [REDACTED].")
-  puts ""
-  puts "..."
-  puts ""
-  prompt("Your hand: #{user_hand}, totalling: #{calculate_total(user_hand)}")
+def display_dealer_hand(dealer_hand)
+  prompt("Dealer shows a #{dealer_hand[0][0]}.")
+end
+
+def display_user_hand(user_hand)
+  prompt("You have: #{user_hand}, totalling: #{calculate_total(user_hand)}")
 end
 
 def bust?(hand, total = 0) # t/f
@@ -64,27 +81,33 @@ def bust?(hand, total = 0) # t/f
 end
 
 def player_turn(dealer_hand, user_hand, deck)
-  display_both_hands(dealer_hand, user_hand)
+  display_dealer_hand(dealer_hand)
+  # delayed_clear(false, false)
+  display_user_hand(user_hand)
+  # delayed_clear(false, false)
   continue_to_dealer_turn = false
 
   loop do
-    prompt("[h]it?...or...[s]tay?")
+    prompt("HIT?...or...STAY?")
     h_or_s = gets.chomp
     system("clear")
     case h_or_s
     when "h"
       user_hand << draw!(1, deck).flatten(1)
-      prompt("You drew a #{user_hand.last.first}!")
-      delayed_clear()
-      display_both_hands(dealer_hand, user_hand)
-      break prompt("BUST! Dealer W!") if bust?(user_hand)
-
+      prompt("User drew a #{user_hand.last.first}!")
+      # delayed_clear()
+      display_user_hand(user_hand)
+      if bust?(user_hand)
+        prompt("BUST!")
+        # delayed_clear(false)
+        break prompt("Dealer W.")
+      end
     when 's'
-      prompt("User stays with a score of #{calculate_total(user_hand)}.")
-      prompt("Passing to dealer...")
-      delayed_clear()
+      prompt("User STAYS at #{calculate_total(user_hand)}.")
+      # delayed_clear(false, false)
+      prompt("Passing to dealer.")
+      # delayed_clear(true, false)
       break continue_to_dealer_turn = true
-
     end
   end
   continue_to_dealer_turn ? calculate_total(user_hand) : nil
@@ -99,11 +122,12 @@ def dealer_turn(dealer_hand, deck)
       prompt("BUST! User W!")
       break continue_to_compare_totals = false
     elsif dealer_total >= 17
-      prompt("Dealer stays with a score of #{dealer_total}.")
+      prompt("Dealer STAYS at #{dealer_total}.")
+      # delayed_clear(true, false)
       break dealer_total
     else
       prompt("Dealer HITS.")
-      delayed_clear()
+      # delayed_clear(true, false)
       dealer_hand << draw!(1, deck).flatten(1)
       dealer_total = calculate_total(dealer_hand)
     end
@@ -114,45 +138,51 @@ end
 def declare_a_winner(user_final_score, dealer_final_score)
   prompt "User score: #{user_final_score}"
   prompt "Dealer score: #{dealer_final_score}"
-  prompt "Tie game." if user_final_score == dealer_final_score
-  prompt "User wins." if user_final_score > dealer_final_score
-  prompt "Dealer wins." if user_final_score < dealer_final_score
-end
-
-def delayed_clear(dot = 10)
-  dot.times do
-    sleep(0.2)
-    puts "."
-  end
-  system("clear")
+  prompt "Tie." if user_final_score == dealer_final_score
+  prompt "User W." if user_final_score > dealer_final_score
+  prompt "Dealer W." if user_final_score < dealer_final_score
 end
 
 # ------------------------------********************************----------------------------
 
-def play_round
-  system("clear")
-  prompt("Welcome!")
-  delayed_clear()
-  prompt("Loading 21...")
-  delayed_clear()
-  prompt("Initializing deck...")
+def play_round() # deck needs to carry over...
   working_deck = initialize_deck()
-  delayed_clear()
-  prompt("Initial hands have been dealt")
+  # delayed_clear()
+  prompt("Initial hands dealt.")
+  # delayed_clear(false, false)
   mine = draw!(2, working_deck)
   dealers = draw!(2, working_deck)
 
   user_final_score = player_turn(dealers, mine, working_deck)
 
   if user_final_score
-    prompt("Dealer must beat user score of #{user_final_score} to win...")
-    delayed_clear()
+    prompt("Dealer must beat user score of #{user_final_score} to win.")
+    # delayed_clear(true, false)
     dealer_final_score = dealer_turn(dealers, working_deck)
+
     if dealer_final_score
       declare_a_winner(user_final_score, dealer_final_score)
     end
   end
-  puts "Round ended."
+  # delayed_clear(true, false)
+  prompt("Round over.")
 end
 
-play_round()
+def game
+  prompt("Welcome, User!")
+  # delayed_clear()
+  prompt("Loading 21")
+
+  loop do
+    play_round()
+    # delayed_clear(false, false)
+    prompt("Play again?")
+    run_it_back = gets.chomp
+    # delayed_clear(false)
+    break if run_it_back == "n"
+  end
+  prompt("Exited 21")
+  # delayed_clear(true, true)
+end
+
+game()
