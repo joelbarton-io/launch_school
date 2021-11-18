@@ -64,69 +64,95 @@ def bust?(hand, total = 0) # t/f
 end
 
 def player_turn(dealer_hand, user_hand, deck)
-  # system("clear")
   display_both_hands(dealer_hand, user_hand)
+  continue_to_dealer_turn = false
 
   loop do
     prompt("[h]it?...or...[s]tay?")
-    case gets.chomp
+    h_or_s = gets.chomp
+    system("clear")
+    case h_or_s
     when "h"
       user_hand << draw!(1, deck).flatten(1)
-      puts "You drew a #{user_hand.last.first}"
+      prompt("You drew a #{user_hand.last.first}!")
+      delayed_clear()
       display_both_hands(dealer_hand, user_hand)
-      break prompt("BUST! Dealer wins...") if bust?(user_hand)
+      break prompt("BUST! Dealer W!") if bust?(user_hand)
+
     when 's'
-      prompt("No more cards for me!")
-      break prompt("Passing to dealer...")
-      # used to invoke dealer_turn here with dealer hand and deck
+      prompt("User stays with a score of #{calculate_total(user_hand)}.")
+      prompt("Passing to dealer...")
+      delayed_clear()
+      break continue_to_dealer_turn = true
+
     end
   end
+  continue_to_dealer_turn ? calculate_total(user_hand) : nil
 end
-
-
-# multiple aces? if true,
-# one needs to be reassigned to count as 1
-
-
 
 def dealer_turn(dealer_hand, deck)
   dealer_total = calculate_total(dealer_hand)
+  continue_to_compare_totals = true
 
-  until dealer_total >= 17 do
-    break prompt("BUST! Player wins!!!") if bust?(dealer_hand)
-    dealer_hand << draw!(1, deck).flatten(1)
-    dealer_total = calculate_total(dealer_hand)
+  loop do
+    if bust?(dealer_hand)
+      prompt("BUST! User W!")
+      break continue_to_compare_totals = false
+    elsif dealer_total >= 17
+      prompt("Dealer stays with a score of #{dealer_total}.")
+      break dealer_total
+    else
+      prompt("Dealer HITS.")
+      delayed_clear()
+      dealer_hand << draw!(1, deck).flatten(1)
+      dealer_total = calculate_total(dealer_hand)
+    end
   end
-  dealer_hand
+  continue_to_compare_totals ? dealer_total : nil
 end
 
+def declare_a_winner(user_final_score, dealer_final_score)
+  prompt "User score: #{user_final_score}"
+  prompt "Dealer score: #{dealer_final_score}"
+  prompt "Tie game." if user_final_score == dealer_final_score
+  prompt "User wins." if user_final_score > dealer_final_score
+  prompt "Dealer wins." if user_final_score < dealer_final_score
+end
 
-puts "game on!"
+def delayed_clear(dot = 10)
+  dot.times do
+    sleep(0.2)
+    puts "."
+  end
+  system("clear")
+end
 
-# initalize deck and two-card hands:
-working_deck = initialize_deck()
-mine = draw!(2, working_deck)
-dealers = draw!(2, working_deck)
+# ------------------------------********************************----------------------------
 
+def play_round
+  system("clear")
+  prompt("Welcome!")
+  delayed_clear()
+  prompt("Loading 21...")
+  delayed_clear()
+  prompt("Initializing deck...")
+  working_deck = initialize_deck()
+  delayed_clear()
+  prompt("Initial hands have been dealt")
+  mine = draw!(2, working_deck)
+  dealers = draw!(2, working_deck)
 
-# play game
-player_turn(dealers, mine, working_deck)
+  user_final_score = player_turn(dealers, mine, working_deck)
 
-# dealer_turn(dealer_hand, deck)
+  if user_final_score
+    prompt("Dealer must beat user score of #{user_final_score} to win...")
+    delayed_clear()
+    dealer_final_score = dealer_turn(dealers, working_deck)
+    if dealer_final_score
+      declare_a_winner(user_final_score, dealer_final_score)
+    end
+  end
+  puts "Round ended."
+end
 
-
-
-
-
-
-# verifying that ace calculation works, it does...
-# ace_deck = []
-# 26.times do
-#   ace_deck.push(['ace', 11])
-#   ace_deck.push(['3', 3])
-# end
-
-
-# ace_hand = draw!(4, ace_deck)
-
-# prompt("hand: #{ace_hand} and total: #{calculate_total(ace_hand)}")
+play_round()
