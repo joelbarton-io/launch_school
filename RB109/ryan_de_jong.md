@@ -91,17 +91,18 @@ Ex: 2
   puts num
 end
 ```
-
+On line 90, the `Array#each` method is invoked on an array of integers and passed a `do...end ` block as an argument. Upon each iteration of the `each` method and block execution, block parameter `num` is assigned the **current element** of the calling array. On line 91, the puts method is called with block parameter num and output to the screen.  `Puts` returns `nil` to `each`, but since `each` isn't concerned with it's block's return value, it does nothing with `nil`. Once `each` is done iterating over its calling array, it returns caller.
 
 Ex: 1
 ```ruby 
 a = 1 
 
 loop do       
-  puts a    
+  puts a 
   a = a + 1   
   break      
 end
 
 puts a 
 ```
+On line 98, local variable `a` is initialized to 1.  Next, the `loop` method is called and passed a `do...end` block as an argument. On line 101, the `puts` method is invoked with the value of `a` as its argument and outputs `1` and returns `nil`. Next, variable `a` is reassigned to the sum of `a`'s value and `1` (integer 2). Once we reach keyword `break`, we exit out of the `loop`.  Finally, on line 106, the `puts` method is called with the value of `a` as its argument, `2` is output to the screen and `nil` is returned. 
