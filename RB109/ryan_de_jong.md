@@ -52,4 +52,56 @@ end
 
 include?([1, 2, 3, 4, 5], 6)
 ```
+On line 53, the `include?` method is invoked with two object arguments: an array and an integer.  Upon invocation, method parameters (present in `include?`'s method definition, lines 49-51) `arr` and `search_item` reference the passed in array and integer arguments, respectively.  On line 51, The `each` method is invoked on method parameter `arr` and passed a `{...}` block as its argument. Upon each iteration of `each` and running of the block, block parameter `item` is assigned the value of the current element in our calling object `arr`.  The block will return boolean object true when the current value of `item` is equal to the value of `search_item` (using the comparison operator `==`).  On line 51, since we know that the `each` method invariably returns its calling object–in this case, `arr` the bang operator `!` effectively negates `arr`'s truthiness property.  This is the last line of code evaluated, thus the `include?` method returns boolean false.
 
+Ex: 4
+``` ruby
+def merge(array_1, array_2)
+  array_1 | array_2
+end
+
+arr1, arr2 = ['hello'], ['hello', 'world']
+merged = merge(arr1, arr2)
+merged[0][0] = 'J'
+p merged
+p arr1
+p arr2
+```
+On line 63, local variables `arr1` and `arr2` are initialized to array objects containing strings.  It's worth noting that this single line assignment is made possible by **parallel assignment**, which allows a developer to initialize multiple variables separated by commas to multiple values separated by commas.  On line 64, we initialize local variable `merged` to the evaluated result of calling the `merge` method with the values of `arr1` and `arr2` as arguments. On line 59, upon invocation, method parameters `array_1` and `array_2` reference the passed-in values.  On line 60, the `Array#|` method is invoked on `array1` and passed `array2` as an argument. `merge` then returns a **new array** containing two strings `['hello', 'world']`. It should be noted that the first string element of this new array, `'hello'` is the **same** string object as the `'hello'` contained in `arr1` array. 
+
+On line 65, we invoke the `Array#[]` method, accessing the element in `merged` at index 0, whose present value is the string `'hello'`.  Then, we invoke the `String#[]=` method on `'hello'`, accessing the element at index 0, whose present value is `'h'` and setting it to string `'J'`.  Since `[]=` is destructive, this change is reflected in other instances of this particular `'hello'` object. So on line 66, when we invoke the `p` method with the value of `merged` as an argument, `['Jello', 'world']` will be output to the screen and returned by `p`.  Similarly, on line 67 when `p` is invoked with `arr1`, `['Jello']` is output to the screen and returned.  On line 68, when `p` is invoked with `arr2`, `['hello', 'world']` is output to the screen and returned.
+
+Ex: 3
+``` ruby 
+def short_long_short(string1, string2)
+  if string1.length > string2.length
+    string2 + string1 + string2
+  else
+    string1 + string2 + string1
+  end
+end
+
+short_long_short('abc', 'defgh')
+```
+On line 84, the method `short_long_short` is invoked with two string objects: `'abc'`, `'defgh'` as its arguments.  Once invoked, `short_long_short`'s parameters `string1` and `string2` reference the passed-in string objects `'abc'`, `'defgh'`. Lines 77-81 involve a conditional `if...else...end` structure.  On line 77, we have two calls to the `String#length` method. Each call returns the **number** of characters in the respective calling object.  Since the expression: `3 > 5` (which implements the `Integer#>` comparison operator) evaluates to `false` which has a falsey quality, the `if` branch of our conditional structure is **not** evaluated and we move to the `else` branch.  On line 80, there are two successive string concatonations (`+`) which result in a **new string** `'abcdefghabc'` being returned out of the `short_long_short` method. 
+
+Ex: 2
+``` ruby
+[1, 2, 3].each do |num|
+  puts num
+end
+```
+
+
+Ex: 1
+```ruby 
+a = 1 
+
+loop do       
+  puts a    
+  a = a + 1   
+  break      
+end
+
+puts a 
+```
