@@ -72,13 +72,24 @@
 # puts a
 # puts b
 
-def method param, param2
-  param << param2
-  param
+# def method param, param2
+#   param << param2
+#   param
+# end
+
+# other = ' there'
+# str = 'hi'
+# method(str, other)
+# p str # => 'hi there'
+# p other
+
+def fix(value)
+  value = value.upcase!
+  value = value.concat('!')
 end
 
-other = ' there'
-str = 'hi'
-method(str, other)
-p str # => 'hi there'
-p other
+s = 'hello'
+t = fix(s)
+
+p s
+p t
