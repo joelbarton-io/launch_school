@@ -83,13 +83,31 @@
 # p str # => 'hi there'
 # p other
 
-def fix(value)
-  value = value.upcase!
-  value = value.concat('!')
-end
+# def fix(value)
+#   value = value.upcase!
+#   value = value.concat('!')
+# end
 
-s = 'hello'
-t = fix(s)
+# s = 'hello'
+# t = fix(s)
 
-p s
-p t
+# p s
+# p t
+
+# is_true = 'hi' && true
+# p is_true.class
+
+# num = 2
+# p num.odd?.class
+
+
+# str = 'hello there!'
+
+# str2 = 'general kenobi!'
+
+# droid = nil
+
+# answer = (str2 && str)
+
+# p answer
+
