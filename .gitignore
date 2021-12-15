@@ -1,3 +1,4 @@
 #add files to ignore below: 
 
-Core_Launch_School/*.txt
+Launch_School/*.txt
+Launch_School/scratch
