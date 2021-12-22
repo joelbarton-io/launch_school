@@ -416,4 +416,50 @@ Local variable `result` is initialized to the array object returned by invoking 
 
 Since the last line evaluated within the block execution uses the equality operator `==` to essentially see if the sub_arrays contain duplicates, only two of the sub_array elements are selected and included in the array referenced by `result`. 
 
+Kari's question:
 
+"Explain why a outputs 3 instead of 4 on line 10 . What structure is defined on lines 4–8? How does this structure affect a's final output and what is the underlying concept here?"
+
+
+1  a = 4
+2  b = 2
+3
+4  loop do
+5    c = 3
+6    a = c
+7    break
+8  end
+9
+10 puts a
+11 puts b
+
+The structure on lines 4-8 is a method invocation with a block. The final value of `a` and thus what is output on line 10 is `3` due to `a` being reassigned to the integer object referenced by `c` within the block scope. This reassignment is possible because block scopes have access to local variables in their enclosing (outer) scopes. local variable `a` is initialized in this outer scope and can therefore be accessed and reassigned from within the block.  The main concept here is scoping rules, particularly as they pertain to the behavior of local variables around method invocations with blocks.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Find the length of the longest substring in the given string that contains exatly 2 characters "a" and 2 characters "e" in it.
+
+# As an example, if the input was “aaee”, the substring (aaee) length would be 4.
+# For a string "babanctekeaa", the longest substring is "babancteke" and its length is 10.
+
+# If the length of the input string is 0, return value must be -1 and if none of the substrings contain 2 "a" and "e" characters return -1 as well.
+
+# p longest_ae("aaee") == 4
+# p longest_ae("babanctekeaa") == 10
+# p longest_ae("xenoglossophobia") == -1
+# p longest_ae("pteromerhanophobia") == 18
+# p longest_ae("johannisberger") == -1
+# p longest_ae("secaundogenituareabb") == 16
+# p longest_ae("aaaa") == -1
