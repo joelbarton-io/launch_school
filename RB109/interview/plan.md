@@ -1,6 +1,12 @@
 # Soft outline for study plans leading up to interview:
 
-1. Redo all easy, medium, and hard problems, taking the time to experience the full process for as many as possible under timed conditions*
-2. Reach out to Chelsea, Mohammed, Fred, Anthony, Ethan, etc to do live coding
+- Establish daily and weekly goals.
+- Finish one of my medium articles and publish it
+
+1. Redo all easy, medium, and advanced problems, taking time to experience  full process for as many as possible under timed conditions*
+2. Reach out to do live coding w classmates
 3. Supplement LS supplied problems with Codewars problems 8-5 kyu difficulty
-4. 
+4. Compare my earlier small problems solutions to second pass answers
+5. Flash cards for active recall re: in-build methods, & discuss 
+6. At least 2 TA sessions and 2+ SPOT student-led sessions
+7. ...
