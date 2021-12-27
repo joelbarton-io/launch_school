@@ -1,7 +1,7 @@
 # Soft outline for study plans leading up to interview:
 
 - Establish daily and weekly goals.
-- Finish one of my medium articles and publish it
+- Finish one of my medium articles and publish
 
 1. Redo all easy, medium, and advanced problems, taking time to experience  full process when appropriate
 2. Reach out to do live, timed coding practice w classmates
