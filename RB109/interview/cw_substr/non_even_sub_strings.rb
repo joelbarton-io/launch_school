@@ -1,5 +1,4 @@
 =begin
-
 problem: 
 i: string of integers
 o: number of odd-numbered substrings
@@ -21,7 +20,6 @@ algo:
 
 - now we have all subarrays, calculate the number of odd integer arrays present
 =end
-
 def solve(s) 
   array = s.chars
   storage = []
@@ -36,3 +34,5 @@ def solve(s)
   end
   storage.select {|str| str.to_i.odd?}.size
 end
+
+p solve('1341')
