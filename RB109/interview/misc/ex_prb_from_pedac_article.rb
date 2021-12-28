@@ -35,11 +35,11 @@ time to completion: ~ 13:00
 def method(target, factors = [3, 5])
   cache = []
   1.upto(target - 1) do |num|
-    if (num % factors[0]).zero? || (num % factors[1]).zero?
-      cache << num
-    end 
+    if factors.size.eql?(2)
+      cache << num if (num % factors[0]).zero? || (num % factors[1]).zero?
+    elsif factors.size.eql?(1)
+      cache << num if (num % factors[0]).zero?
+    end
   end
   cache.reduce(&:+)
 end
-
-p method(20)
