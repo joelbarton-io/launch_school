@@ -14,20 +14,21 @@ algo:
 - first, split by character, initialize storage array
 - second, traverse over array elements and indexes
 - third, initialize an additional counter and an adaptive end point
+
 - fourth, get all substrings from current element to the end of the array
 - fifth, push the subarrays into the storage array
 - increment the counter
 
 - now we have all subarrays, calculate the number of odd integer arrays present
-
 =end
+
 def solve(s) 
   array = s.chars
   storage = []
   
   array.each.with_index do |_, idx|
     take = 1
-    end_point = array.length - idx
+    end_point = array.size - idx
     until take > end_point do
       storage << array.slice(idx, take).join
       take += 1
@@ -35,5 +36,3 @@ def solve(s)
   end
   storage.select {|str| str.to_i.odd?}.size
 end
-
-p solve '1341'
