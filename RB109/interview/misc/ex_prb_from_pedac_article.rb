@@ -32,7 +32,7 @@ Algorithm:
 time to completion: ~ 13:00
 =end
 
-def method(target, factors = [3, 5])
+def sum_of_multiples(target, factors = [3, 5])
   cache = []
   1.upto(target - 1) do |num|
     if factors.size.eql?(2)
@@ -41,5 +41,11 @@ def method(target, factors = [3, 5])
       cache << num if (num % factors[0]).zero?
     end
   end
-  cache.reduce(&:+)
+  p cache.reduce(&:+)
 end
+sum_of_multiples(20, [3, 5])  # returns 78
+sum_of_multiples(20, [3])     # returns 63
+sum_of_multiples(20, [5])     # returns 30
+sum_of_multiples(20, [])      # returns 78
+sum_of_multiples(1, [])       # returns 0
+sum_of_multiples(20, [19])    # returns 19
