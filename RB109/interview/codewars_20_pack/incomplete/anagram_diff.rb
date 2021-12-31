@@ -39,4 +39,35 @@ def anagram_difference(word_1, word_2)
   shared_w_1 + shared_w_2
 end
 
+# p anagram_difference('codewars', 'hackerrank')
+
+
+
+=begin
+p:
+  i: two words
+  o: number of letters needed to remove to make them anagrams.
+
+
+anagram: two words contain the same letters
+goal: we want to figure out how many letters need to be removed from both inputs for them to be anagrams.
+      We want to know how many characters are shared between the two strings
+
+ds: 
+algo:
+
+def is_anagram?(str1, str2)
+  str1.chars.sort == str2.chars.sort
+end
+
+store each string's elements in separate cache hashes
+
+
+
+=end
+
+def anagram_difference(word1, word2)
+  
+end
+
 p anagram_difference('codewars', 'hackerrank')

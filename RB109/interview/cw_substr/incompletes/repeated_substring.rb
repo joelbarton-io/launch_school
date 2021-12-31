@@ -26,6 +26,7 @@ if any substring == another
     whole string length times 1 is our match
 
 =end
+
 def f(string)
   letters = string.chars
   sub_strings = []
