@@ -10,3 +10,18 @@
 5. Flash cards for active recall re: in-build methods, & discuss 
 6. At least 2 TA sessions and 2+ SPOT student-led sessions
 7. ...
+
+
+**TEMPLATE (in beta)**
+
+**[Stage-1]** in, out, edge, ass
+1. inputs/outputs
+2. edge-cases inform assumptions
+
+**[Stage-2]** ds & algo
+1. FLOW: in -> [*steps*] -> out (DS w/ EX)
+2. STEPS -> high-level (ALGORITHM)
+
+**[Stage-3]** -> implementation & coding
+1. details (checking in PRY) -> low-level process
+2. write some CODE
