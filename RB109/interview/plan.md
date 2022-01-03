@@ -14,14 +14,15 @@
 
 **TEMPLATE (in beta)**
 
-**[Stage-1]** in, out, edge, ass
+**[Stage]** in, out, edge, assum
 1. inputs/outputs
 2. edge-cases inform assumptions
+3. establish requirements (implicit/explicit req)
 
-**[Stage-2]** ds & algo
+**[Stage]** ds & algo
 1. FLOW: in -> [*steps*] -> out (DS w/ EX)
 2. STEPS -> high-level (ALGORITHM)
 
-**[Stage-3]** -> implementation & coding
+**[Stage]** -> implementation & coding
 1. details (checking in PRY) -> low-level process
 2. write some CODE
