@@ -9,52 +9,32 @@ Example:
 "ababab"  =>  ["ab", 3]
 "abcde"  =>   ["abcde", 1]
 
-data structure:
-array of substrings
+ds: str -> arr_of_all_substrings (substr, count)
 
-algo:
+high level:
 
-convert input string to array; initialize some variables
-traverse letters array, with index
+GENERATE all possible substrings
 
-generate all possible substrings
+COMPARE input string to each substring (MAIN OP)
+  UNLESS substring is input length, add substring to self, increment count
 
-if any substring == another
-  check how many duplicates there are
-    if duplicate count times substring length == input string length, thats our match,
-  otherwise, 
-    whole string length times 1 is our match
-
+return array
 =end
-
-def f(string)
-  letters = string.chars
-  sub_strings = []
-
-  letters.each_with_index do |_, idx|
-    take = 1
-    end_point = letters.length - idx
-
-    until take > end_point do
-      sub_strings << letters.slice(idx, take).join
-      take += 1
+def get_subs(phrase)
+  result = []
+  (0...phrase.size).each do |idx1|
+    (idx1...phrase.size).each do |idx2|
+      result << phrase[idx1..idx2]
     end
   end
-  # subs = dupes(sub_strings)
-  # repeat_sub_str_count = sub_strings.count(subs)
-
-  # if (repeat_sub_str_count * subs.size).eql?(letters.size)
-  #   return [subs, repeat_sub_str_count]
-  # else
-  #   return [string, 1]
-  # end
-  dupes(sub_strings)
+  result
 end
 
-def dupes(array)
-  array.detect {|sub_string| array.count(sub_string) > 1}
+def f(phrase)
+  sub_strings = get_subs(phrase)
+  sub_strings.each do |substring|
+    count = phrase.size / substring.size
+    return [substring, count] if (substring * count) == phrase  
+  end
 end
-
-
-
-p f('ababab')
+p f('asdf') # == ['asdf', 1]
