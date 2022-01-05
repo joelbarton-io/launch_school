@@ -9,8 +9,7 @@
 4. Compare my earlier small problems solutions to second pass answers
 5. Flash cards for active recall re: in-build methods, & discuss 
 6. At least 2 TA sessions and 2+ SPOT student-led sessions
-7. ...
-
+7. Settle on template ...
 
 **TEMPLATE (in beta)**
 
