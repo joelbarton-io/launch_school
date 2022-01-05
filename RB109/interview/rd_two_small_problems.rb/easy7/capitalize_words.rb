@@ -12,9 +12,9 @@ capitalize word -> .capitalize first downcases all elements, then capitalizes ch
 
 =end
 
-def word_cap(string)
-  string
-    .split(/ /)
+def word_cap(phrase)
+  phrase
+    .split
     .map do |word|
     word.capitalize  # initially, I chained .downcase & .capitalize capitalize does both
   end.join(' ')
