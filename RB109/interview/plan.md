@@ -13,11 +13,6 @@
 
 
 
-
-
-
-
-
 **TEMPLATE (in beta)**
 
 **[Stage]** in, out, edge, assum

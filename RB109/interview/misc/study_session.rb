@@ -80,7 +80,9 @@ i: int        o: number of odds that are non-prime
 
 prime = positive integer w no divisors other than 1 and self 
 
+ds: 
+
 =end
 def odd_not_prime(number)
-  
+
 end

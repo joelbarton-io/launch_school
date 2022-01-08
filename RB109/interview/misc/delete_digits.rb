@@ -32,21 +32,36 @@ find all substrings from input w length: (input.size - k)
 #   candidates.map(&:join).min
 # end
 
-=begin
+
 def solve(n,k)
   array = n.to_s.chars
   k.times do
     set = []
     array.each_index do |idx|
       arr = array.clone
-      arr.slice!(idx, 1)
+      arr.slice!(idx)
       set << arr
-      p set
     end
+    p set.min
     array = set.min
   end
   array.join
 end
+
+=begin
+INIT array of characters
+  K times do...
+    INIT empty array
+    TRAVERSE indices... 
+      GENERATE a clone
+      MUTATE clone, deleting one character
+      PUSH mutated clone to storage array
+    END traversing indices
+
+    REASSIGN array to the set's minimum
+  END
+  Join Array
+END
 =end
 
 # p solve(123056,1) == '12056'
