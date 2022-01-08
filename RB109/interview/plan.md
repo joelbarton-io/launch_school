@@ -11,6 +11,13 @@
 6. At least 2 TA sessions and 2+ SPOT student-led sessions
 7. Settle on template ...
 
+
+
+
+
+
+
+
 **TEMPLATE (in beta)**
 
 **[Stage]** in, out, edge, assum
