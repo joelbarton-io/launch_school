@@ -34,46 +34,40 @@ GET max 3 values
 def clean_phrase(dirty_array)
   acceptable = ('a'..'z').to_a << "'"
   cleaned = []
-  
   dirty_array.each do |candidate|
-    cleaned_word = candidate.chars.select { |chr| acceptable.include?(chr) }.join('')
-    cleaned << cleaned_word
+    cleaned << candidate.chars.select {|chr| acceptable.include?(chr) }.join('')
   end
+  cleaned.delete('')
   cleaned
 end
 
-  # letter_counts = cleaned.map.with_object(Hash.new(0)) do |word, hsh|
-  #   hsh.include?(word) ? hsh[word] += 1 : hsh[word] = 1
-  # end ->replaced by tally
-
 def top_3_words(phrase)
-  
-  return [] if 
   phrase.downcase!
-  alphas_only = ('a'..'z').to_a
-  array = phrase.split(' ')
-  cleaned = clean_phrase(array)
-  
-  letter_counts = cleaned.tally
   result = []
+  return result if phrase.count("a-z").zero?
+
+  alphas_only = ('a'..'z').to_a
+  cleaned = clean_phrase(phrase.split(' '))
   
-  top_3 = letter_counts.sort_by { |key, value| value }.reverse
-  top_3.each {|pair| result << pair.first }
+  letter_counts = cleaned.map.with_object(Hash.new(0)) do |word, hsh|
+    hsh.include?(word) ? hsh[word] += 1 : hsh[word] = 1
+  end
+
+  sorted_by_value = letter_counts.sort_by { |key, value| value }.reverse
+  sorted_by_value.each {|pair| result << pair.first }
   result[0...3]
 end
 
-
-
-# p top_3_words("a a a  b  c c  d d d d  e e e e e") ==  ["e", "d", "a"]
+p top_3_words("a a a  b  c c  d d d d  e e e e e") ==  ["e", "d", "a"]
 p top_3_words("e e e e DDD ddd DdD: ddd ddd aa aA Aa, bb cc cC e e e") == ["e", "ddd", "aa"]
-# p top_3_words("  //wont won't won't ") == ["won't", "wont"]
-# p top_3_words("  , e   .. ") == ["e"]
-# p top_3_words("  ...  ") == []
-# p top_3_words("  '  ") == []
-# p top_3_words("  '''  ") == []
-# p top_3_words("""In a village of La Mancha, the name of which I have no desire to call to
-# mind, there lived not long since one of those gentlemen that keep a lance
-# in the lance-rack, an old buckler, a lean hack, and a greyhound for
-# coursing. An olla of rather more beef than mutton, a salad on most
-# nights, scraps on Saturdays, lentils on Fridays, and a pigeon or so extra
-# on Sundays, made away with three-quarters of his income.""") == ["a", "of", "on"]
+p top_3_words("  //wont won't won't ") == ["won't", "wont"]
+p top_3_words("  , e   .. ") == ["e"]
+p top_3_words("  ...  ") == []
+p top_3_words("  '  ") == []
+p top_3_words("  '''  ") == []
+p top_3_words("""In a village of La Mancha, the name of which I have no desire to call to
+mind, there lived not long since one of those gentlemen that keep a lance
+in the lance-rack, an old buckler, a lean hack, and a greyhound for
+coursing. An olla of rather more beef than mutton, a salad on most
+nights, scraps on Saturdays, lentils on Fridays, and a pigeon or so extra
+on Sundays, made away with three-quarters of his income.""") == ["a", "of", "on"]
