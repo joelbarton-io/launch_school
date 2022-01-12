@@ -16,9 +16,10 @@
 **small victories**
 
 **[01-07]**
-1. read slow; write i/o 
-2. ask questions, edge-cases inform assumptions
-3. write out expl/impl-icit requirements
+1. read slowly; write i/o 
+2. ask clarifying questions
+3. edge-cases inform assumptions
+3. write expl/impl-icit requirements
 +
 **[07-14]**
 1. input -> [*steps*] -> output [flow_of_data]
