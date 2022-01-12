@@ -26,7 +26,7 @@ TRAVERSE array of chunks
 Join chunks
 =end
 def revrot(string_integer, sz)
-  return '' if string_integer.size <= 0 || sz > string_integer.size
+  return '' if string_integer.size <= 0 || sz > string_integer.size || sz.zero?
   arr = string_integer.chars
   chunks = []
   
@@ -36,21 +36,17 @@ def revrot(string_integer, sz)
   end
   
   chunks.map do |chk| 
-    if (chk.map(&:to_i).map {|n| n*n*n }.sum%2).zero?
-      chk.reverse
-    else
-      chk.rotate(1)
-    end
+    sum = (chk.map(&:to_i).map {|n| n*n*n }.sum)
+    (sum%2).zero? ? chk.reverse : chk.rotate(1)
   end.join
 end
 
 
 # p revrot("123456987654", 6) == "234561876549"
-# p revrot("123456987653", 6) == "234561356789"
 # p revrot("66443875", 4) == "44668753"
 # p revrot("66443875", 8) == "64438756"
 # p revrot("664438769", 8) == "67834466"
 # p revrot("123456779", 8) == "23456771"
 # p revrot("", 8) == ""
-# p revrot("123456779", 0) == "" 
+p revrot("123456779", 0) == "" 
 p revrot("563000655734469485", 4) == "0365065073456944"
