@@ -14,7 +14,7 @@ algo:
 as soon as we reach a capitalized letter, slice out from idx 1 to index curr -1
 
 TRAVERSE array of letters
-  Once we reach a capital letter, slice out from 
+
 =end
 
 def kebabize(camelcase_text)
