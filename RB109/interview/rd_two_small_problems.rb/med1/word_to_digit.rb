@@ -18,21 +18,13 @@ return that string of words with updated stringified integers
 =end
 
 def word_to_digit(input_string)
-  acceptable = [*'a'..'z', 'A'..'Z']
   numbers_arr = %w(zero one two three four five six seven eight nine)
-  words_arr = input_string.split(' ')
-
+  words_arr = input_string.split(/\b/)
+  
   sentence = words_arr.map do |word|
-    if !acceptable.include?(word[-1])
-
-      if numbers_arr.include?(word[0..-2]) 
-        numbers_arr.index(word[0..-2]) 
-      else
-        word
-      end
-    end
-  end.join(' ')
-  p sentence
+    numbers_arr.include?(word) ? numbers_arr.index(word) : word
+  end.join('')
+  sentence
 end
 
 

@@ -8,8 +8,7 @@ o: lexicographically sorted array `r`
 
 algo:
 - traverse over array2 
-- for each element, check to see if that element contains a substring that matches any of the 
-  elements in a1
+- for each element, check to see if that element contains a substring that matches any of the elements in a1
   - if word is found in candidate, push word to r
 - remove duplicate strings from r and sort r
 =end
@@ -25,8 +24,8 @@ end
 
 
 =begin
-V2. 
-algo: 
+V2.
+algo:
   - choose those words from a1 that are present in at least one of the a2 elements
 -   ^.select     ^target                           ^any?                  ^candidate
 =end

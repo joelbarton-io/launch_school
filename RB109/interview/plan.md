@@ -13,18 +13,18 @@
 
 
 
-**small victories**
+**aim for small victories**
 
 **[01-07]**
 1. read slowly; write i/o 
-2. ask clarifying questions
-3. edge-cases inform assumptions
+2. clarify keywords
+3. test-cases inform assumptions!
 3. write expl/impl-icit requirements
 +
 **[07-14]**
 1. input -> [*steps*] -> output [flow_of_data]
-2. sketch out high-level algorithm
+2. sketch out high-level algorithm [core_operations]
 +
 **[14-21]**
-1. implementation details -> low-level algo
-2. C.O.D.E.
+1. operation details -> low-level algo
+2. code

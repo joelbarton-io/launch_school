@@ -6,13 +6,11 @@
 #   m_dim_array.each do |sub_arr|
 #     diffs << (sub_arr.first - sub_arr.last).abs
 #   end
-  
 #   mutated = m_dim_array.each.with_index do |sub_arr, idx|
 #     sub_arr[-1] = diffs.fetch(idx)
 #   end
 #   mutated.min_by(&:last)[0]
 # end
-
 
 =begin
 i: hash object      o: user rank
@@ -83,5 +81,3 @@ users = {  1  =>  93,
           30  =>   2 }
 
 p nexus(users) == 20
-
-# p find_nexus(users) == 20
