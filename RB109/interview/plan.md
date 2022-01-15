@@ -18,12 +18,13 @@
 **[01-07]**
 1. read slowly; write i/o 
 2. clarify keywords
-3. test-cases inform assumptions!
+3. test-cases inform assumptions
 3. write expl/impl-icit requirements
 +
 **[07-14]**
-1. input -> [*steps*] -> output [flow_of_data]
-2. sketch out high-level algorithm [core_operations]
+1. input -> [steps] -> output      [data_flo]
+2. sketch out high-level algorithm [main_ops]
+3. if stuck, walk it through manually
 +
 **[14-21]**
 1. operation details -> low-level algo
