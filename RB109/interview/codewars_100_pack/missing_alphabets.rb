@@ -84,8 +84,8 @@ def missing_alphabets(string)
 end
 
 
-p missing_alphabets("abcdefghijklmnopqrstuvwxy") == "z"
-p missing_alphabets("abcdefghijklmnopqrstuvwxyz") == ""
-p missing_alphabets("aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyy") == "zz"
-p missing_alphabets("abbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxy") == "ayzz"
-p missing_alphabets("codewars") == "bfghijklmnpqtuvxyz"
+p insert_missing_alphabets("abcdefghijklmnopqrstuvwxy") == "z"
+p insert_missing_alphabets("abcdefghijklmnopqrstuvwxyz") == ""
+p insert_missing_alphabets("aabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyy") == "zz"
+p insert_missing_alphabets("abbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxy") == "ayzz"
+p insert_missing_alphabets("codewars") == "bfghijklmnpqtuvxyz"

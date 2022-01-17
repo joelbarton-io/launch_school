@@ -22,28 +22,27 @@ considerations:
   -> pool: (2...target)
   -> target is always positive integer
 
-ds: int -> arr of primes
+ds: int -> arr of primes -> |ops| -> boolean
 
 from the pool of prime numbers smaller than target...
 are there any pairs that, when multiplied together, eql target?
 
-algo:
-GENERATE pool of primes below target
+'multiplying each number by the other, check if any pair produces the target'
 
-multiplying each number by the other, check if any pair produces the target
-  
-nested loop structure using ranges...
-  arr of primes -> traverse these indices...
-    check if any produce is == to input n
-      return true
-    --
-  --
-false
+algo: 
+GENERATE pool of primes beneath target
+nested loop structure using ranges upto length...
+  TRAVERSE the indices of arr of primes
+    CHECK if any product eqls the input number
+      if this is the case, return true
+    +--
+  --+
+return false
 =end
 
 def get_primes(n)
-  (2...n).select do |candidate|
-    (2...candidate).none? {|divisor| (candidate%divisor) == 0}
+  (2...n).select do |prime_candidate|
+    (2...prime_candidate).none? {|divisor| (prime_candidate%divisor).zero?}
   end
 end
 

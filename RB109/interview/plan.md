@@ -13,19 +13,72 @@
 
 
 
-**aim for small victories**
++---------------------------------------------------+
+| **[00-07]** "read every line SLOWLY"              |
+1. state i/o                                        |
+2. clarify keywords/concepts                        |
+3. look                      |
+4. figure out the implicit requirements/r             |
++---------------------------------------------------+
+| >>>>> "do I fully UNDERSTAND the question?" <<<<< |
++---------------------------------------------------+
+| **[07-14]** "solve every step of logic"           |
+1. in -> [steps...] -> out             [data flo]   |
+2. sketch all small operations         [high lvl]   |
+3. stuck? solve one example manually   [low  lvl]   |
++---------------------------------------------------+
+| >>>>>>>>>>>>> "do I have a PLAN?" <<<<<<<<<<<<<<< |
++---------------------------------------------------+
+| **[14-21]**                                       |
+1. implementation details                           |
+2. code with intent                                 |
++---------------------------------------------------+
 
-**[01-07]**
-1. read slowly; write i/o 
-2. clarify keywords
-3. test-cases inform assumptions
-3. write expl/impl-icit requirements
-+
-**[07-14]**
-1. input -> [steps] -> output      [data_flo]
-2. sketch out high-level algorithm [main_ops]
-3. if stuck, walk it through manually
-+
-**[14-21]**
-1. operation details -> low-level algo
-2. code
+important: careful with max_by/min_by and max/min !!!
+
+get all consecutive substrings of a list
+```ruby
+def get_substrings(arr)
+  cache = []
+  (0...arr.size).each do |start_idx|
+    (start_idx...arr.size).each do |end_idx|
+      cache << arr[start_idx..end_idx]
+    end
+  end
+  cache
+end
+```
+get all primes upto n
+```ruby
+def get_primes(n)
+  (2...n).select do |prime_candidate|
+    (2...prime_candidate).none? {|divisor| (prime_candidate%divisor).zero?}
+  end
+end
+```
+get fibonacci sequence upto n
+```ruby
+def fib_to_(n)
+  seed = [0, 1]
+  0.upto(n-1) do |idx|
+    seed << seed[idx] + seed[idx+1]
+  end
+  seed
+end
+```
+is it a palindrome?
+```ruby
+def palindrome?
+(str.size/2).times.all? { |i| str[i] == str[-i-1] }
+```
+are they anagrams?
+```ruby
+```
+
+future reference written:
+-> write out your own questions based on the study guide
+
+for interview:
+-> try using binding.pry
+-> helper methods?
+-> prime, anagram, palindrome, 
