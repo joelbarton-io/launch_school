@@ -43,3 +43,6 @@ def wave(text)
   end
   cache
 end
+
+
+p wave('hel------lo')

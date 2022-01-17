@@ -39,4 +39,4 @@ def wave(string)
   end
   cache
 end
-p wave("hello") #== ["Hello", "hEllo", "heLlo", "helLo", "hellO"]
+p wave("hel---lo") #== ["Hello", "hEllo", "heLlo", "helLo", "hellO"]

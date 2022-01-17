@@ -15,15 +15,15 @@
 
 +---------------------------------------------------+
 | **[00-07]** "read every line SLOWLY"              |
-1. state i/o                                        |
-2. clarify keywords/concepts                        |
-3. look                      |
-4. figure out the implicit requirements/r             |
+1. state the i/o                                    |
+2. clarify keywords and confusing concepts          |
+3. restate the question in my own words             |
+4. figure out implicit requirements from testcases  |
 +---------------------------------------------------+
 | >>>>> "do I fully UNDERSTAND the question?" <<<<< |
 +---------------------------------------------------+
-| **[07-14]** "solve every step of logic"           |
-1. in -> [steps...] -> out             [data flo]   |
+| **[07-14]** "solve every step of logic first"     |
+1. in -> [...steps...] -> out          [data flo]   |
 2. sketch all small operations         [high lvl]   |
 3. stuck? solve one example manually   [low  lvl]   |
 +---------------------------------------------------+
@@ -48,11 +48,20 @@ def get_substrings(arr)
   cache
 end
 ```
-get all primes upto n
+get all primes up to n
 ```ruby
 def get_primes(n)
   (2...n).select do |prime_candidate|
     (2...prime_candidate).none? {|divisor| (prime_candidate%divisor).zero?}
+  end
+end
+```
+is a number prime?
+```ruby
+def is_prime?(n)
+  return false if n.zero? || n == 1
+  (2...n).none? do |divisor|
+    (n%divisor).zero?
   end
 end
 ```
@@ -68,11 +77,13 @@ end
 ```
 is it a palindrome?
 ```ruby
-def palindrome?
-(str.size/2).times.all? { |i| str[i] == str[-i-1] }
+def palindrome?(str)
+  (str.size/2).times.all? { |i| str[i] == str[-i-1] }
+end
 ```
 are they anagrams?
 ```ruby
+
 ```
 
 future reference written:

@@ -33,4 +33,4 @@ def longest(str)
   cache.join
 end
 
-# p longest('asdfaaaabbbbcttavvfffffdf')
+p longest('asdfaaaabbbbcttavvfffffdf')
