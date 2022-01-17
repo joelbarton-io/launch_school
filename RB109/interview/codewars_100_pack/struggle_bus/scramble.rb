@@ -39,4 +39,3 @@ def scramble?(candidate, target)
     sub.sort == sorted_targ
   end
 end
-

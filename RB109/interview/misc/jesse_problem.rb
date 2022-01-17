@@ -42,6 +42,10 @@ get longest array from cache arr  -> return this array -> max_by/max length **
 #  cache
 # end
 
+def prime(num)
+  (2...num).select {|trial| num%trial == 0}.empty?
+end
+
 # def max_prime_sub(array)
 #   return 0 if array.empty?
 #   sub_arrs = get_all_subs(array)
@@ -61,10 +65,24 @@ get longest array from cache arr  -> return this array -> max_by/max length **
 #   end
 # end
 
-# p get_all_subs([1, 3, 1, 0, 1, 6, 6])
 # p max_prime_sub([1, 3, 1, 0, 1, 6, 6]) == 6
 # p max_prime_sub([]) == 0
 # p max_prime_sub([1]) == 0
 # p max_prime_sub([7, 13, 9, 1, 3]) == 3
 # p max_prime_sub([1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0]) == 13
 # p max_prime_sub([100, 100, 100, 50, 3, 1, 1, 1]) == 5
+
+Write a method to find the longest common prefix string aomonst an array of strings. 
+If there is no common prefix, return an empty string ''.
+
+ex:
+
+in: ['flower', 'flow', 'flight']
+out: 'fl'
+
+ex:
+
+in: ['dog', 'racecar', 'car']
+out:  ''
+
+no common prefix
