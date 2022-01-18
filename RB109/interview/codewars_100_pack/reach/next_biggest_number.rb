@@ -32,3 +32,5 @@ def next_bigger(n)
   return nil if greater_than_n.empty?
   greater_than_n.min
 end
+
+'asdf'.

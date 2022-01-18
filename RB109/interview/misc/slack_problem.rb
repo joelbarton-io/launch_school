@@ -36,3 +36,4 @@ end
 input = [*1..100]
 
 p cons_prime()
+

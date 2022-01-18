@@ -71,3 +71,34 @@ end
 
 p diff('codewars', 'hackerrank')
 
+=begin 
+again
+=end
+def anagram_difference(str_1, str_2)
+  return 0 if str_1.empty? && str_2.empty?
+  arr_1, arr_2 = str_1.chars, str_2.chars
+  shared_letters = []
+  
+  count = 0
+  loop do
+    if arr_2.include?(arr_1[count])
+      chr_idx = arr_2.index(arr_1[count])
+      arr_2.delete_at(chr_idx)
+      shared_letters << arr_1[count]
+    end
+    count += 1
+    break if count > arr_1.size
+  end
+  p shared_letters
+  (str_1.size - shared_letters.size) + (str_2.size - shared_letters.size)
+end
+
+p anagram_difference('', '') == 0
+p anagram_difference('a', '') == 1
+p anagram_difference('', 'a') == 1
+p anagram_difference('ab', 'a') == 1
+p anagram_difference('ab', 'ba') == 0
+p anagram_difference('ab', 'cd') == 4
+p anagram_difference('aab', 'a') == 2
+p anagram_difference('a', 'aab') == 2
+p anagram_difference('codewars', 'hackerrank') == 10
