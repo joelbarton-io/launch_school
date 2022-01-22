@@ -26,11 +26,10 @@ def next_bigger(n)
   return nil if number.uniq.size.eql?(1)
   candidates = []
   number.permutation do |candi|
-    candidates << candi.join.to_i
+    candidates << candi.join.to_s
   end
   greater_than_n = candidates.select {|candi| candi > n}
   return nil if greater_than_n.empty?
   greater_than_n.min
 end
 
-'asdf'.

@@ -12,7 +12,7 @@
 7. Settle on template ...
 
 
-
+11:05
 +---------------------------------------------------+
 | **[00-07]** "read every line SLOWLY"              |
 1. state the i/o                                    |
@@ -83,7 +83,9 @@ end
 ```
 are they anagrams?
 ```ruby
-
+def anagrams?(str1, str2)
+  str1.chars.sort.eql?(str2.chars.sort)
+end
 ```
 
 future reference written:
@@ -91,5 +93,31 @@ future reference written:
 
 for interview:
 -> try using binding.pry
--> helper methods?
--> prime, anagram, palindrome, 
+-> use early helper methods?
+-> prime?, anagram?, palindrome?, 
+
+```ruby
+def method(string)
+  specials = ['/', '.']
+  alphabet = ('a'..'z').to_a
+  arr = string.chars
+  
+  letters = arr.select do |candidate|
+    alphabet.include?(candidate)
+  end.sort.reverse
+  count=-1
+  arr.map do |chr|
+    if specials.include?(chr)
+      chr
+    else
+      count+=1
+      letters[count]
+    end
+  end.join
+end
+```
+
+-> a bit too time conscious 
+-> slight tendency to run to conclusions a little too soon
+-> take time a little more to think, speak a little bit less
+-> you should be able to solve (general time constraint) more of an indicator, not hard 

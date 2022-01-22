@@ -14,12 +14,9 @@ TRAVERSE str_as_arr with indices
 JOIN cache arr by '-'
 =end
 def accum(string)
-  cache = []
-  arr = string.split('')
-  arr.each.with_index do |chr, idx|
-    cache << chr * (idx + 1)
-  end
-  cache.map(&:capitalize).join('-')
+  string.chars.map.with_index do |chr, idx|
+    chr * (idx + 1)
+  end.map(&:capitalize).join('-')
 end
 
-p accum('abcdefghijklmnopqrstuvwxyz')
+p accum('RqaEzty') == "R-Qq-Aaa-Eeee-Zzzzz-Tttttt-Yyyyyyy"

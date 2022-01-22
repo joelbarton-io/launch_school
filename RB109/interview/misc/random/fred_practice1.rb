@@ -134,5 +134,5 @@ def insert_missing_letters(string)
 end
 
 
-p insert_missing_letters("hello")
-p insert_missing_letters("hello") == "hIJKMNPQRSTUVWXYZeFGIJKMNPQRSTUVWXYZlMNPQRSTUVWXYZloPQRSTUVWXYZ"
+# p insert_missing_letters("hello")
+# p insert_missing_letters("hello") == "hIJKMNPQRSTUVWXYZeFGIJKMNPQRSTUVWXYZlMNPQRSTUVWXYZloPQRSTUVWXYZ"
