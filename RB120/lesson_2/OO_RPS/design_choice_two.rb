@@ -17,29 +17,15 @@ class Move
   end
 
   def >(other_move)
-    if rock?
-      return true if other_move.paper?
-      return false
-    elsif paper?
-      return true if other_move.scissors?
-      return false
-    elsif scissors?
-      return true if other_move.rock?
-      return false
-    end
+    (rock? && other_move.paper?) ||
+      (paper? && other_move.scissors?) ||
+      (scissors? && other_move.rock?)
   end
 
   def <(other_move)
-    if rock?
-      return true if other_move.scissors?
-      return false
-    elsif paper?
-      return true if other_move.rock?
-      return false
-    elsif scissors?
-      return true if other_move.paper?
-      return false
-    end
+    (rock? && other_move.scissors?) ||
+      (paper? && other_move.rock?) ||
+      (scissors? && other_move.paper?)
   end
 
   def to_s
@@ -49,6 +35,7 @@ end
 
 class Player
   attr_accessor :move, :name
+
   def initialize
     set_name
   end
@@ -65,11 +52,11 @@ class Human < Player
     end
     self.name = n
   end
-  
+
   def choose
     choice = nil
-    loop do 
-      puts "rock, paper, or scissors?"
+    loop do
+      puts "Please input:'rock', 'paper', or 'scissors'."
       choice = gets.chomp
       break if Move::VALUES.include?(choice)
       puts "invalid input"
@@ -82,7 +69,7 @@ class Computer < Player
   def set_name
     self.name = ['Beep', 'Boop', 'Bingbong', 'Lawrence'].sample
   end
-  
+
   def choose
     self.move = Move.new(Move::VALUES.sample)
   end
@@ -91,15 +78,17 @@ end
 class RPSGame
   attr_accessor :human, :computer
 
-  def initialize 
+  def initialize
     @human = Human.new
     @computer = Computer.new
   end
 
-  def display_winner
+  def display_moves
     puts "#{human.name} chose #{human.move}."
     puts "#{computer.name} chose #{computer.move}."
+  end
 
+  def display_winner
     if human.move < computer.move
       puts "#{human.name} won!"
     elsif human.move > computer.move
@@ -117,7 +106,7 @@ class RPSGame
       break if ['y', 'n'].include?(answer.downcase)
       puts "Invalid input."
     end
-    answer == 'y' ? true : false
+    answer == 'y'
   end
 
   def play
@@ -125,6 +114,7 @@ class RPSGame
     loop do
       human.choose
       computer.choose
+      display_moves
       display_winner
       break unless play_again?
     end
@@ -149,12 +139,15 @@ end
 RPSGame.new.play
 
 =begin
-To be honest, this felt needlessly compartmentalized.  The addition of three move 
-methods, the Move class (enabling us to use a custom move objects), and the two 
-<, > methods was a fairly serious trade off in terms of readability for me personally.
+To be honest, this felt needlessly compartmentalized.
+The addition of three move methods, the Move class
+(enabling us to use a custom move objects), and the two
+<, > methods was a fairly serious trade off in terms of
+ readability for me personally.
 
-That being said, I think I learned a lot from seeing the use of the Move::VALUES 
-constant in use; I haven't seen a namespace (?) used before.  Also, I could see that
-this design is probably better if the scale of the project increases; it allows for
-
+That being said, I think I learned a lot from seeing the
+use of the Move::VALUES constant in use; I haven't seen
+a namespace (?) used before.  Also, I could see that
+this design is probably better if the scale of the project
+increases; it allows for
 =end
