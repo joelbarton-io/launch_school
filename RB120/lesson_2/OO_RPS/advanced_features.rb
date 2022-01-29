@@ -1,35 +1,35 @@
 module Displayable
-  def display_welcome_message
+  def welcome_message
     puts "Welcome to RPS game #{human.name}!"
   end
 
-  def display_moves
+  def show_moves
     puts "#{human.name} chose #{human.move}."
     puts "#{computer.name} chose #{computer.move}."
   end
 
-  def display_round_winner(winner)
+  def round_winner(winner)
     puts "#{winner.name} won!"
   end
 
-  def make_line
+  def draw_line
     max = ["#{human.name}: #{human.score.current}",
            "#{computer.name}: #{computer.score.current}"].max_by(&:size).size
     "+#{'-' * max}+"
   end
 
-  def display_current_score
-    puts make_line
+  def current_score
+    puts draw_line
     puts " #{human.name}: #{human.score.current}"
     puts " #{computer.name}: #{computer.score.current}"
-    puts make_line
+    puts draw_line
   end
 
-  def display_final_scores
+  def final_score
     puts "Final Score: #{human.score.current}-#{computer.score.current}"
   end
 
-  def display_goodbye_message
+  def farewell_message
     puts "Thank you for playing! Goodbye now."
   end
 end
@@ -81,7 +81,6 @@ class Computer < Player
 
   def choose
     self.move = Move.new(Move::VALUES.sample)
-
   end
 end
 
@@ -133,19 +132,20 @@ class Score
     self.score += 1
   end
 
-  def to_s
-    "#{name} has #{current} points."
-  end
-
   private
 
   attr_accessor :score, :name
+
+  def to_s
+    "#{name} has #{current} points."
+  end
 end
 
 class RPSGame
   include Clearable, Displayable
 
-  attr_accessor :human, :computer
+  SLEEP_DURATION = 1.33
+  attr_reader :human, :computer
 
   def initialize(rounds)
     @rounds = rounds
@@ -154,11 +154,11 @@ class RPSGame
   end
 
   def start_game
-    display_welcome_message
-    clear_and_pause_for(1.5)
+    welcome_message
+    clear_and_pause_for(SLEEP_DURATION)
     play_round
-    display_final_scores
-    display_goodbye_message
+    final_score
+    farewell_message
   end
 
   private
@@ -169,17 +169,17 @@ class RPSGame
     loop do
       human.choose
       computer.choose
-      display_moves
-      clear_and_pause_for(1.5)
+      show_moves
+      clear_and_pause_for(SLEEP_DURATION)
       determine_winner
-      break if reached_ten?
+      break if reached_specified_round_limit?
       break unless play_again?
     end
   end
 
   def a_win_for(winner)
     winner.score.increment
-    display_round_winner(winner)
+    round_winner(winner)
   end
 
   def determine_winner
@@ -193,19 +193,19 @@ class RPSGame
   end
 
   def play_again?
-    clear_and_pause_for(1.75)
-    display_current_score
+    clear_and_pause_for(SLEEP_DURATION)
+    current_score
     answer = nil
     loop do
-      puts "Would you like to play again?"
+      puts "Keep playing?"
       answer = gets.chomp
-      break if ['y', 'n', 'yes', 'YES', 'no', 'NO'].include?(answer.downcase)
+      break if ['y', 'n', 'yes', 'no'].include?(answer.downcase)
       puts "Invalid input."
     end
-    answer == 'y' || answer == 'yes' || answer == 'YES'
+    answer == 'y' || answer == 'yes'
   end
 
-  def reached_ten?
+  def reached_specified_round_limit?
     (human.score.current == rounds) || (computer.score.current == rounds)
   end
 
@@ -215,3 +215,25 @@ class RPSGame
 end
 
 RPSGame.new(3).start_game
+
+=begin
+
+I chose to create a Score class from which I could instantiate score objects.
+My rationale for this decision is maintaining consistency.  Since I'm using a
+Move object to handle all move-related actions, using a Score object felt right.
+
+I noticed my RPSGame class getting fairly bloated with display-ish methods that
+were heavy with puts statements, string interpolations, and method chaining.  This
+was leading to quite a few ABC-complexity issues (one method scored above 40!) along
+with general loss of readability/maintainability.  I decided to extract every method
+that involved displaying final result/current scores/etc. into a Displayable module.
+
+I wanted to keep things simple with this assigment and focus on thinking about spending
+time thinking about the core OO concepts.
+
+One of the issues I see in my code is some redundancy in some of my methods in the Displayable
+module. In general, this doesn't feel like that much of a problem.  It's likely better to
+have too many methods than too few taking on too much responsibility.
+
+
+=end
