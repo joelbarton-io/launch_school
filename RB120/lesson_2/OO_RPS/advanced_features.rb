@@ -1,6 +1,16 @@
 module Displayable
+  @move_history = []
+
   def welcome_message
     puts "Welcome to RPS game #{human.name}!"
+  end
+
+  def store_moves
+    @move_history.push("#{human.move}--#{computer.move}")
+  end
+
+  def show_all_moves
+    puts @move_history
   end
 
   def show_moves
@@ -145,6 +155,7 @@ class RPSGame
   include Clearable, Displayable
 
   SLEEP_DURATION = 1.33
+
   attr_reader :human, :computer
 
   def initialize(rounds)
@@ -158,6 +169,7 @@ class RPSGame
     clear_and_pause_for(SLEEP_DURATION)
     play_round
     final_score
+    show_all_moves
     farewell_message
   end
 
@@ -169,7 +181,7 @@ class RPSGame
     loop do
       human.choose
       computer.choose
-      show_moves
+      store_moves
       clear_and_pause_for(SLEEP_DURATION)
       determine_winner
       break if reached_specified_round_limit?
@@ -217,7 +229,6 @@ end
 RPSGame.new(3).start_game
 
 =begin
-
 I chose to create a Score class from which I could instantiate score objects.
 My rationale for this decision is maintaining consistency.  Since I'm using a
 Move object to handle all move-related actions, using a Score object felt right.
@@ -234,6 +245,4 @@ time thinking about the core OO concepts.
 One of the issues I see in my code is some redundancy in some of my methods in the Displayable
 module. In general, this doesn't feel like that much of a problem.  It's likely better to
 have too many methods than too few taking on too much responsibility.
-
-
 =end
