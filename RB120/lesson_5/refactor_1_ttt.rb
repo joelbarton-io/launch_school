@@ -18,23 +18,23 @@ class Board
     reset
   end
 
+  # rubocop:disable Metrics/AbcSize
+  # rubocop:disable Metrics/MethodLength
   def draw
     puts '     |     |     '
-    puts "  #{get_square_at(1)}  |  #{get_square_at(2)}  |  #{get_square_at(3)}  "
+    puts "  #{@squares[1]}  |  #{@squares[2]}  |  #{@squares[3]}  "
     puts '     |     |     '
     puts '-----+-----+-----'
     puts '     |     |     '
-    puts "  #{get_square_at(4)}  |  #{get_square_at(5)}  |  #{get_square_at(6)}  "
+    puts "  #{@squares[4]}  |  #{@squares[5]}  |  #{@squares[6]}  "
     puts '     |     |     '
     puts '-----+-----+-----'
     puts '     |     |     '
-    puts "  #{get_square_at(7)}  |  #{get_square_at(8)}  |  #{get_square_at(9)}  "
+    puts "  #{@squares[7]}  |  #{@squares[8]}  |  #{@squares[9]}  "
     puts '     |     |     '
   end
-
-  def get_square_at(key)
-    @squares[key].mark
-  end
+  # rubocop:enable Metrics/AbcSize
+  # rubocop:enable Metrics/MethodLength
 
   def []=(key, mark)
     @squares[key].mark = mark
@@ -82,7 +82,6 @@ class Square
   def unmarked?
     mark == INITIAL_MARK
   end
-  
 
   def to_s
     @mark
@@ -94,35 +93,54 @@ class TTTGame
 
   HUMAN_MARKER = 'X'.freeze
   COMPUTER_MARKER = 'O'.freeze
+  FIRST_TO_MOVE = HUMAN_MARKER
 
   def initialize
     @board = Board.new
     @human = Player.new(HUMAN_MARKER)
     @computer = Player.new(COMPUTER_MARKER)
+    @current_marker = FIRST_TO_MOVE
   end
 
   def play
     welcome_message
-    display_board
+    main_game
+    farewell_message
+  end
+
+  private
+
+  def current_player_moves
+    if human_turn?
+      human_move
+      @current_marker = COMPUTER_MARKER
+    else
+      computer_move
+      @current_marker = HUMAN_MARKER
+    end
+  end
+
+  def human_turn?
+    @current_marker == HUMAN_MARKER
+  end
+
+  def main_game
     loop do
-      play_one_round
+      display_board
+      play_round
+      display_result
       break unless play_again?
       reset
       display_play_again_message
     end
-    farewell_message
   end
 
-  def play_one_round
+  def play_round
     loop do
-      human_move
+      current_player_moves
       break if board.someone_won? || board.full?
-
-      computer_move
-      break if board.someone_won? || board.full?
-      clear_screen_and_display_board
+      clear_screen_and_display_board if human_turn?
     end
-    display_result
   end
 
   def play_again?
@@ -137,6 +155,7 @@ class TTTGame
 
   def reset
     board.reset
+    @current_marker = FIRST_TO_MOVE
     board.clear
   end
 
@@ -176,6 +195,10 @@ class TTTGame
     puts 'Welcome to TTTGame.'
   end
 
+  def farewell_message
+    puts 'Thanks for playing.'
+  end
+
   def display_board
     puts "You are #{human.unique_mark}. Computer is #{computer.unique_mark}."
     puts ''
@@ -186,10 +209,6 @@ class TTTGame
   def clear_screen_and_display_board
     board.clear
     display_board
-  end
-
-  def farewell_message
-    puts 'Thanks for playing.'
   end
 end
 
