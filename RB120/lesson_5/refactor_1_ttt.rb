@@ -1,10 +1,25 @@
 class Player
-  attr_reader :unique_mark
+  attr_reader :unique_mark, :score
 
   def initialize(unique_mark)
     @unique_mark = unique_mark
+    @score = Score.new
   end
 end
+
+class Score
+  INITIAL_SCORE = 0
+  attr_accessor :current
+
+  def initialize
+    @current = INITIAL_SCORE
+  end
+
+  def increment
+    self.current += 1
+  end
+end
+
 
 class Board
   WINNING_LINES = [
@@ -56,8 +71,13 @@ class Board
     indices = [0, 1, 2]
 
     WINNING_LINES.each do |line|
-      return TTTGame::HUMAN_MARKER    if indices.all? { |idx| @squares[line[idx]].mark == TTTGame::HUMAN_MARKER }
-      return TTTGame::COMPUTER_MARKER if indices.all? { |idx| @squares[line[idx]].mark == TTTGame::COMPUTER_MARKER }
+      if indices.all? { |idx| @squares[line[idx]].mark == TTTGame::HUMAN_MARKER }
+        # increment human win in score board
+        return TTTGame::HUMAN_MARKER
+      elsif indices.all? { |idx| @squares[line[idx]].mark == TTTGame::COMPUTER_MARKER }
+        # increment human win in score board
+        return TTTGame::COMPUTER_MARKER
+      end
     end
     nil
   end
@@ -88,6 +108,9 @@ class Square
   end
 end
 
+class LeaderBoard
+
+end
 class TTTGame
   attr_reader :board, :human, :computer
 
@@ -110,36 +133,40 @@ class TTTGame
 
   private
 
-  def current_player_moves
-    if human_turn?
-      human_move
-      @current_marker = COMPUTER_MARKER
-    else
-      computer_move
-      @current_marker = HUMAN_MARKER
-    end
-  end
-
-  def human_turn?
-    @current_marker == HUMAN_MARKER
-  end
-
   def main_game
     loop do
       display_board
-      play_round
+      play_one_round
       display_result
       break unless play_again?
       reset
       display_play_again_message
+      display_scores
     end
   end
 
-  def play_round
+  def display_board
+    puts "You are #{human.unique_mark}. Computer is #{computer.unique_mark}."
+    puts ''
+    board.draw
+    puts ''
+  end
+
+  def play_one_round
     loop do
       current_player_moves
       break if board.someone_won? || board.full?
       clear_screen_and_display_board if human_turn?
+    end
+  end
+
+  def display_result
+    clear_screen_and_display_board
+
+    case board.winning_marker
+    when human.unique_mark    then puts 'You won the round!'
+    when computer.unique_mark then puts 'Computer won the round!'
+    when nil                  then puts 'The board is full!'
     end
   end
 
@@ -161,7 +188,30 @@ class TTTGame
 
   def display_play_again_message
     puts "Let's play again!"
-    puts ''
+    puts
+  end
+
+  def display_scores
+    puts 'ScoreBoard'
+    puts '----------'
+    puts "H: #{human.score.current}"
+    puts "C: #{computer.score.current}"
+    puts '----------'
+    puts
+  end
+
+  def current_player_moves
+    if human_turn?
+      human_move
+      @current_marker = COMPUTER_MARKER
+    else
+      computer_move
+      @current_marker = HUMAN_MARKER
+    end
+  end
+
+  def human_turn?
+    @current_marker == HUMAN_MARKER
   end
 
   def computer_move
@@ -169,7 +219,7 @@ class TTTGame
   end
 
   def human_move
-    puts "Choose a number (#{board.unclaimed_squares.join(', ')}): "
+    puts "Choose a number (#{joinor(board.unclaimed_squares)}): "
     choice = nil
 
     loop do
@@ -181,14 +231,18 @@ class TTTGame
     board[choice] = human.unique_mark
   end
 
-  def display_result
-    clear_screen_and_display_board
-
-    case board.winning_marker
-    when human.unique_mark    then puts 'You won!'
-    when computer.unique_mark then puts 'Computer won!'
-    when nil                  then puts 'The board is full!'
+  def joinor(left_over_squares, divider = ', ', final_divider = 'or')
+    case left_over_squares.size
+    when 1 then left_over_squares.first
+    when 2 then left_over_squares.join(" #{final_divider} ")
+    else
+      left_over_squares[-1] = "#{final_divider} #{left_over_squares.last}"
+      left_over_squares.join(divider)
     end
+  end
+
+  def increment_score_of(player_who_won)
+    player_who_won.score.increment
   end
 
   def welcome_message
@@ -199,13 +253,6 @@ class TTTGame
     puts 'Thanks for playing.'
   end
 
-  def display_board
-    puts "You are #{human.unique_mark}. Computer is #{computer.unique_mark}."
-    puts ''
-    board.draw
-    puts ''
-  end
-
   def clear_screen_and_display_board
     board.clear
     display_board
@@ -214,3 +261,23 @@ end
 
 game = TTTGame.new
 game.play
+
+
+=begin
+- keeping score
+  - i decided to ignore the suggestion to avoid using an instance or global variable here.
+  Using an instance variable makes a lot of sense in this context.
+  I decided to define a new class Score, with a few attributes
+
+ everytime an outcome has been reached (either computer or player have won, we want to update our scoreboard)
+ Is this a player attribute? This makes more sense than storing it in an instance variable of either of the
+ Board or TTTGame classes. This way, Player and LeaderBoard can collaborate.  After a fair bit of sandbox
+ experimentation, I managed to establish the relationship I wanted between Score and Player objects.
+
+ The next major challenge was deciding where it made the most sense to invoke TTTGame#increment_score_of(player).
+ Following the general flow of the program, it wasn't immediately obvious where to place the method.
+
+ The placement of the current score breakdown felt fairly straightforward: if we're starting a new round,
+ tell the human user the current score. The obvious location is to invoke TTTGame#display_score is after the
+ TTTGame#display_play_again_message method call.
+=end
