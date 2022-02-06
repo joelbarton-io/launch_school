@@ -1,31 +1,50 @@
 require 'pry'
+require 'yaml'
+
+PROMPTS = YAML.load_file('refactor_2_ttt.yml')
+
+module Talk
+  def prompt(input)
+    puts input
+  end
+end
 
 class Player
   attr_reader :unique_mark, :score, :name
 
-  def initialize(unique_mark, name = ['Beep', 'Boop', 'Bingbong', 'Lawrence'].sample)
+  def initialize(unique_mark, name = assign_computer_name)
     @name = name
     @unique_mark = unique_mark
     @score = Score.new
   end
+
+  private
+
+  def assign_computer_name
+    ['Beep', 'Boop', 'Bingbong', 'Lawrence'].sample
+  end
 end
 
 class Score
-  INITIAL_SCORE = 0
   attr_accessor :current
 
   def initialize
-    @current = INITIAL_SCORE
+    @current = ''
   end
 
   def increment
-    self.current += 1
+    if current == ''
+      self.current += '>'
+    else
+      self.current.prepend(' ')
+    end
   end
 end
 
 class Board
-
+  include Talk
   attr_reader :squares
+
   WINNING_LINES = [
     [1, 2, 3], [4, 5, 6], [7, 8, 9],
     [1, 4, 7], [2, 5, 8], [3, 6, 9],
@@ -40,17 +59,17 @@ class Board
   # rubocop:disable Metrics/AbcSize
   # rubocop:disable Metrics/MethodLength
   def draw
-    puts '     |     |     '
+    prompt(PROMPTS['two_pipes'])
     puts "  #{@squares[1]}  |  #{@squares[2]}  |  #{@squares[3]}  "
-    puts '     |     |     '
-    puts '-----+-----+-----'
-    puts '     |     |     '
+    prompt(PROMPTS['two_pipes'])
+    prompt(PROMPTS['plus_line'])
+    prompt(PROMPTS['two_pipes'])
     puts "  #{@squares[4]}  |  #{@squares[5]}  |  #{@squares[6]}  "
-    puts '     |     |     '
-    puts '-----+-----+-----'
-    puts '     |     |     '
+    prompt(PROMPTS['two_pipes'])
+    prompt(PROMPTS['plus_line'])
+    prompt(PROMPTS['two_pipes'])
     puts "  #{@squares[7]}  |  #{@squares[8]}  |  #{@squares[9]}  "
-    puts '     |     |     '
+    prompt(PROMPTS['two_pipes'])
   end
   # rubocop:enable Metrics/AbcSize
   # rubocop:enable Metrics/MethodLength
@@ -75,21 +94,24 @@ class Board
     indices = [0, 1, 2]
 
     WINNING_LINES.each do |line|
-      if indices.all? { |idx| @squares[line[idx]].mark == TTTGame::HUMAN_MARKER }
-        return TTTGame::HUMAN_MARKER
-      elsif indices.all? { |idx| @squares[line[idx]].mark == TTTGame::COMPUTER_MARKER }
-        return TTTGame::COMPUTER_MARKER
-      end
+      return TTTGame::H_MARKER if indices.all? { |idx| @squares[line[idx]].mark == TTTGame::H_MARKER }
+      return TTTGame::C_MARKER if indices.all? { |idx| @squares[line[idx]].mark == TTTGame::C_MARKER }
     end
     nil
   end
 
   def find_at_risk_square(line, curr_board, marker)
-    if curr_board.squares.values_at(*line).select { |sqr| sqr.mark == marker }.count == 2
-      curr_board.squares.select{ |k, v| line.include?(k) && v.mark == Square::INITIAL_MARK}.keys.first
-    else
-      nil
+    if has_two_marks?(line, curr_board, marker)
+      curr_board.squares.select do |k, v|
+        line.include?(k) && v.mark == Square::INITIAL_MARK
+      end.keys.first
     end
+  end
+
+  def has_two_marks?(line, curr_board, marker)
+    curr_board.squares.values_at(*line).select do |sqr|
+      sqr.mark == marker
+    end.count == 2
   end
 
   def reset
@@ -119,17 +141,18 @@ class Square
 end
 
 class TTTGame
+  include Talk
   attr_reader :board, :human, :computer
 
-  HUMAN_MARKER = 'X'.freeze
-  COMPUTER_MARKER = 'O'.freeze
-  FIRST_TO_MOVE =  HUMAN_MARKER #[HUMAN_MARKER, COMPUTER_MARKER].sample
+  H_MARKER = 'X'.freeze
+  C_MARKER = 'O'.freeze
+  FIRST_TO_MOVE = H_MARKER # [H_MARKER, C_MARKER].sample
   MAX_SCORE = 5
 
   def initialize
     @board = Board.new
-    @human = Player.new(HUMAN_MARKER, ask_human_for_their_name)
-    @computer = Player.new(COMPUTER_MARKER)
+    @human = Player.new(H_MARKER, ask_human_for_their_name)
+    @computer = Player.new(C_MARKER)
     @current_marker = FIRST_TO_MOVE
   end
 
@@ -144,11 +167,21 @@ class TTTGame
   def ask_human_for_their_name
     name = nil
     loop do
-      puts 'Please enter your name: '
+      prompt(PROMPTS['user_name'])
       name = gets.chomp.capitalize
       break board.clear if name
     end
     name
+  end
+
+  def human_declare_symbol
+    symbol = nil
+    loop do
+      prompt(PROMPTS['user_symbol'])
+      symbol = gets.chomp.to_s
+      break board.clear if symbol
+    end
+    symbol
   end
 
   def main_game
@@ -156,7 +189,7 @@ class TTTGame
       display_board
       play_one_round
       display_result_and_increment_score
-      break puts "Game over." if max_score_reached?
+      break prompt(PROMPTS['game_over']) if max_score_reached?
       break unless play_again?
       reset
       display_play_again_message
@@ -180,18 +213,16 @@ class TTTGame
     end
   end
 
-  def display_result_and_increment_score           # this is troublesome, but I couldn't think of a way to implement differently
+  def display_result_and_increment_score
     clear_screen_and_display_board
-
     case board.winning_marker
     when human.unique_mark
       increment_score_of(human)
-      puts 'You won the round!'
+      prompt(PROMPTS['h_won'])
     when computer.unique_mark
       increment_score_of(computer)
-      puts 'Computer won the round!'
-    when nil
-      puts 'The board is full!'
+      prompt(PROMPTS['c_won'])
+    when nil then prompt(PROMPTS['board_full'])
     end
   end
 
@@ -202,7 +233,7 @@ class TTTGame
   def play_again?
     answer = nil
     loop do
-      puts 'Play again? (y/n)'
+      prompt(PROMPTS['play_again'])
       answer = gets.chomp.downcase
       break if ['y', 'n'].include?(answer)
     end
@@ -216,31 +247,30 @@ class TTTGame
   end
 
   def display_play_again_message
-    puts "Let's play again!"
+    prompt(PROMPTS['again!'])
     puts
   end
 
   def display_scores
-    puts 'ScoreBoard'
-    puts '----------'
+    prompt(PROMPTS['text_score_board'])
+    prompt(PROMPTS['insert_line'])
     puts "#{human.name[0]}: #{human.score.current}"
     puts "#{computer.name[0]}: #{computer.score.current}"
-    puts '----------'
-    puts
+    prompt(PROMPTS['insert_line'])
   end
 
   def current_player_moves
     if human_turn?
       human_move
-      @current_marker = COMPUTER_MARKER
+      @current_marker = C_MARKER
     else
       computer_move
-      @current_marker = HUMAN_MARKER
+      @current_marker = H_MARKER
     end
   end
 
   def human_turn?
-    @current_marker == HUMAN_MARKER
+    @current_marker == H_MARKER
   end
 
   def human_move
@@ -251,7 +281,7 @@ class TTTGame
       choice = gets.chomp.to_i
       break if board.unclaimed_squares.include?(choice)
 
-      puts 'Invalid choice.'
+      prompt(PROMPTS['invalid_choice'])
     end
     board[choice] = human.unique_mark
   end
@@ -260,13 +290,13 @@ class TTTGame
     square = nil
     # offense
     Board::WINNING_LINES.each do |line|
-      square = board.find_at_risk_square(line, board, TTTGame::COMPUTER_MARKER)
+      square = board.find_at_risk_square(line, board, TTTGame::C_MARKER)
       break if square
     end
     # defense
     if !square
       Board::WINNING_LINES.each do |line|
-        square = board.find_at_risk_square(line, board, TTTGame::HUMAN_MARKER)
+        square = board.find_at_risk_square(line, board, TTTGame::H_MARKER)
         break if square
       end
     end
@@ -305,34 +335,8 @@ class TTTGame
   end
 
   def farewell_message
-    puts 'Thanks for playing.'
+    prompt(PROMPTS['thankyou'])
   end
 end
 
-# TTTGame.new.play
-
-=begin
-- keeping score
-  - i decided to ignore the suggestion to avoid using an instance or global variable here.
-  Using an instance variable makes a lot of sense in this context.
-  I decided to define a new class Score, with a few attributes.
-
- Everytime an outcome has been reached (either computer or player have won, we want to update our scoreboard)
- Is this a player attribute? This makes more sense than storing it in an instance variable of either of the
- Board or TTTGame classes. This way, Player and LeaderBoard can collaborate.  After a fair bit of sandbox
- experimentation, I managed to establish the relationship I wanted between Score and Player objects.
-
- The next major challenge was deciding where it made the most sense to invoke TTTGame#increment_score_of(player).
- Following the general flow of the program, it wasn't immediately obvious where to place the method. At first
- I was leaning towards placing TTTGame#increment_score_of(player) within the Board#winning_marker method since
- it felt like a natural place for this incrementing action to occur. However, that would involve some sort of
- class hierarchy in order to access TTTGame#increment_score_of(player) from within the Board class so, that was
- shortlived.  The next spot that made sense was within TTTGame class.
-
- The placement of the current score breakdown felt fairly straightforward: if we're starting a new round,
- tell the human user the current score. The obvious location is to invoke TTTGame#display_score is after the
- TTTGame#display_play_again_message method call.
-
- The fact that there are two different #reset methods (one defined within TTTGame, one defined within Board) is
- troublesome/slightly confusing in my opinion.
-=end
+TTTGame.new.play

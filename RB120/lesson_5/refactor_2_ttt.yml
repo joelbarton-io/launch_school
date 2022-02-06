@@ -1,0 +1,19 @@
+test: "Hi there!"
+user_name: 'Please enter your name: '
+user_symbol: 'Please declare a symbol: '
+
+game_over: "****Game Over!****"
+h_won: 'You won the round!'
+c_won: 'Computer won the round!'
+board_full: 'The board is full!'
+
+play_again: 'Play again? (y/n)'
+again!: "Let's play again!"
+insert_line: '-|-|-|-|-|'
+text_score_board: "racetrack!"
+invalid_choice: 'Invalid choice.'
+
+thank_you: 'Thanks for playing.'
+
+two_pipes: '     |     |     '
+plus_line: '-----+-----+-----'
