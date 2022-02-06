@@ -1,2 +1,4 @@
 request_name: "What's your name?"
 confirm_name: "^ is your name? (type 'y' to confirm)"
+
+your_hand: "Your have: "

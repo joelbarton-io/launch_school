@@ -12,9 +12,11 @@ Here is an overview of the game:
 - If both totals are equal, then it's a tie, and nobody wins.
 =end
 
+module Displayable
+
+end
 module Talkable
   def talk(text)
-    puts ''
     puts text
     puts ''
   end
@@ -22,47 +24,91 @@ end
 
 class Participant
   include Talkable
-  # attr_accessor :hit, :stay, :total
+  attr_reader :name
 
   def initialize
+    @hand = []
   end
 
   def busted?
   end
-end
 
-class Player < Participant
-  def initialize
-    @name = user_name()
+  def hit
+  end
+
+  def stay
+  end
+
+  def draw(card)
+    hand << card
   end
 
   private
 
-  def user_name
+  attr_reader :hand
+end
+
+class Player < Participant
+
+  def initialize
+    @name = retrieve_name()
+    super()
+  end
+
+  def show
+    puts "#{name}'s hand contains: "
+    puts hand
+  end
+
+  private
+
+  def retrieve_name
     name = nil
     loop do
-      prompt(PROMPTS['request_name'])
+      talk(PROMPTS['request_name'])
       name = gets.chomp.capitalize
-      prompt(PROMPTS['confirm_name'])
+      talk(PROMPTS['confirm_name'])
       next unless gets.chomp.downcase == 'y'
       break
     end
-    name
+    name.freeze
   end
 end
 
 class Dealer < Participant
-end
 
-
-class Deck
   def initialize
-    @deck = create
+    @name = retrieve_name()
+    super()
+  end
+
+  def show
+    puts "#{name} shows: "
+    puts hand.first
   end
 
   private
 
-  def create
+  def retrieve_name
+    ['Beep', 'Boop', 'Bingbong', 'Lawrence'].sample.freeze
+  end
+end
+
+
+class Deck
+  attr_reader :deck
+
+  def initialize
+    @deck = create_deck()
+  end
+
+  def deal!
+    deck.pop
+  end
+
+  private
+
+  def create_deck()
     make_deck.shuffle
   end
 
@@ -83,19 +129,19 @@ end
 
 class Card
   SUIT = %w(Diamonds Hearts Clubs Spades)
-  FACE = {ace:    11,
-          two:    2,
-          three:  3,
-          four:   4,
-          five:   5,
-          six:    6,
-          seven:  7,
-          eight:  8,
-          nine:   9,
-          ten:    10,
-          jack:   10,
-          queen:  10,
-          king:   10
+  FACE = {Ace:    11,
+          Two:    2,
+          Three:  3,
+          Four:   4,
+          Five:   5,
+          Six:    6,
+          Seven:  7,
+          Eight:  8,
+          Nine:   9,
+          Ten:    10,
+          Jack:   10,
+          Queen:  10,
+          King:   10
          }
   def initialize(suit, face, value)
     @suit = suit
@@ -104,25 +150,36 @@ class Card
   end
 
   def to_s
-    "#The {@face} of #{@suit} with a value of #{@value}"
+    "#The #{@face} of #{@suit}"
   end
+
 end
 
-
 class Game
+  attr_reader :current, :player, :dealer
 
   def initialize
-    @deck = Deck.new
-    @human = Player.new
-    @computer = Player.new
+    @current = Deck.new
+    @player = Player.new
+    @dealer = Dealer.new
   end
 
   def start
-    deal_cards
+    deal_cards_to_both_players(2)
+    binding.pry
     show_initial_cards
     player_turn
     dealer_turn
     show_result
+  end
+
+  private
+
+  def deal_cards_to_both_players(count = 1) # why is this method in the Game class?
+    count.times do
+      player.draw(current.deal!)
+      dealer.draw(current.deal!)
+    end
   end
 end
 
