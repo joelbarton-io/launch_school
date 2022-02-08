@@ -1,4 +1,17 @@
 request_name: "What's your name?"
-confirm_name: "^ is your name? (type 'y' to confirm)"
+confirm_name: "^^^^^ is this your name? (type 'y' to confirm)"
 
-your_hand: "Your have: "
+your_hand: "Your current hand: "
+line: "----------------"
+
+
+farewell: 'Thank you for playing!'
+welcome: 'Welcome to 21!'
+
+# current_total: 'Your current total: '
+hit_or_stay: 'Would you like to (h)it? (draw another card) \n or (s)tay? (wait and see)'
+invalid_h_s: 'Invalid input.'
+
+hit: 'Hit!'
+
+to_dealer: 'Passing to dealer...'
