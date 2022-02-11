@@ -3,7 +3,7 @@
 - Establish daily and weekly goals.
 - Finish one of my medium articles and publish
 
-1. Redo easy, medium problems, experience full process where appropriate  
+1. Redo easy, medium problems, experience full process where appropriate
 2. Reach out to do live, timed coding practice w classmates               |D|
 3. Supplement LS supplied problems with Codewars problems 6-4 kyu         |D|
 4. Compare my earlier small problems solutions to second pass answers     |_|
@@ -94,14 +94,14 @@ future reference written:
 for interview:
 -> try using binding.pry
 -> use early helper methods?
--> prime?, anagram?, palindrome?, 
+-> prime?, anagram?, palindrome?,
 
 ```ruby
 def method(string)
   specials = ['/', '.']
   alphabet = ('a'..'z').to_a
   arr = string.chars
-  
+
   letters = arr.select do |candidate|
     alphabet.include?(candidate)
   end.sort.reverse
@@ -117,7 +117,7 @@ def method(string)
 end
 ```
 
--> a bit too time conscious 
+-> a bit too time conscious
 -> slight tendency to run to conclusions a little too soon
 -> take time a little more to think, speak a little bit less
--> you should be able to solve (general time constraint) more of an indicator, not hard 
+-> you should be able to solve (general time constraint) more of an indicator, not hard

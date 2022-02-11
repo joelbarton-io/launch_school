@@ -1,6 +1,8 @@
 # East or West
-# You will be given an array of string "east" formatted differently every time. Create a function that returns "west" wherever there is "east". Format the string according to the input. Check the examples below to better understand the question.
-  
+# You will be given an array of string "east" formatted differently every time. Create a function
+# that returns "west" wherever there is "east". Format the string according to the input. Check the
+# examples below to better understand the question.
+
 # p direction(["east", "EAST", "eastEAST"]) == ["west", "WEST", "westWEST"]
 # p direction(["eAsT EaSt", "EaSt eAsT"]) == ["wEsT WeSt", "WeSt wEsT"]
 # p direction(["east EAST", "e a s t", "E A S T"]) == ["west WEST", "w e s t", "W E S T"]
@@ -10,7 +12,7 @@
 =begin
 i: arr      o: arr with modified elements
 
-considerations: 
+considerations:
 
 our solution needs to be case sensitive
 maintain spaces where there are spaces
@@ -36,7 +38,7 @@ implementation level:
 
 TRAVERSE input of elements
   CONVERT element -> array -chrs method
-    on each chr, consider case and letter   -> do some checks on case first, then letter 
+    on each chr, consider case and letter   -> do some checks on case first, then letter
       MAINTAIN case and spaces
         if 'e' or "E' -> 'w' or 'W'
         if 'a' or 'A' -> 'e' or "E'
@@ -49,7 +51,7 @@ def direction(array)
   result = array.map do |word|
     word.chars.map do |letter|
       if letter.eql?('e') || letter.eql?('E')
-        letter.eql?('e') ? 'w' : 'W' 
+        letter.eql?('e') ? 'w' : 'W'
       elsif letter.eql?('a') || letter.eql?('A')
         letter.eql?('a') ? 'e' : 'E'
       else
@@ -81,42 +83,42 @@ p direction(["east EAST", "e a s t", "E A S T"]) == ["west WEST", "w e s t", "W 
 
 # # You don't need to validate input, the input string will always contain a certain amount of lowercase letters (min 1 / max 50).
 
-# Input: String (lowercase) 
-# Output: String 
+# Input: String (lowercase)
+# Output: String
 
 # Explicit:
 #   - Insert only after the first occurrence of each character of the input string:
 #     - Alpahbet letters that are not in the original string
 #     - come after the letter of the string you are processing
-#     - Each added letter is uppercase. 
+#     - Each added letter is uppercase.
 
 # Mental Model:
 #   - Build string from empty string:
-#   - Generating sequence/list of alphabet letters. 
-#     - Remove the letters that are in the input string. 
-#   - Going over the input string to access each character. 
+#   - Generating sequence/list of alphabet letters.
+#     - Remove the letters that are in the input string.
+#   - Going over the input string to access each character.
 #     - Find the index of the letter in the current iteration
 #       - Slice out the range of alphabet letters to add.
 #     - Add the character to the string + slice (uppercased)
-#     - Condition: If the current letter is included in the string I'm building, then I'll only add that letter to the string being built. 
-#     - Return the string I built. 
+#     - Condition: If the current letter is included in the string I'm building, then I'll only add that letter to the string being built.
+#     - Return the string I built.
 
 # DS: Constant (array)
 
 # Algorithm:
 #   - Initialize a constant ALPHABET, set to letters a-z.
 #   - Set a variable built_string = ""
-#   - Delete the letters from ALPHABET and save to variable letters_to_add. 
+#   - Delete the letters from ALPHABET and save to variable letters_to_add.
 #   - Iterate over the input string's indices:
 #     - If the current letter is not included in the built_string
-#       - Return the index of the character in ALPHABET. 
-#       - Slice out the range from index + 1 up to last letter. 
-#       - current char + upcased range of letters to built_string. 
-#     - Else 
-#       - Add the char 
+#       - Return the index of the character in ALPHABET.
+#       - Slice out the range from index + 1 up to last letter.
+#       - current char + upcased range of letters to built_string.
+#     - Else
+#       - Add the char
 #   - Return the built string.
 
-ALPHABET = ("a".."z").to_a 
+ALPHABET = ("a".."z").to_a
 
 def insert_missing_letters(string)
   built_string = ""
@@ -124,7 +126,7 @@ def insert_missing_letters(string)
   (0...string.length).each do |i|
     if !built_string.include?(string[i])
       index = ALPHABET.find_index(string[i])
-      slice_to_add = ALPHABET[index + 1..-1].join.delete(string).upcase 
+      slice_to_add = ALPHABET[index + 1..-1].join.delete(string).upcase
       built_string += string[i] + slice_to_add
     else
       built_string += string[i]
@@ -136,3 +138,12 @@ end
 
 # p insert_missing_letters("hello")
 # p insert_missing_letters("hello") == "hIJKMNPQRSTUVWXYZeFGIJKMNPQRSTUVWXYZlMNPQRSTUVWXYZloPQRSTUVWXYZ"
+
+=begin
+tess notes
+
+- recognizing that you only need to change E/e, or A/a, dont need to change ' ', S/s, T/t
+- if vs case, launch school doesn't care if your solution is a bit ugly, - good to say you could just optimize it later
+
+
+=end
