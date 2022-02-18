@@ -99,12 +99,12 @@ p x.output_count # 3
 p y.output_count # 3
 p z.output_count # 3
 
-#
 
 
 
 
 
+1&.
 
 
 
