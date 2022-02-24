@@ -26,4 +26,3 @@ end
 # joel = Person.new("joel", 25, 'student')
 
 [Object.new, Person.new("joel", 25, 'student', 'M')].each { |obj| puts obj }
-
