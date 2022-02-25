@@ -1,3 +1,16 @@
+- [classes and objects](./concepts.md#classes-and-objects)
+- [attr_*](./concepts.md#attr_*)
+- [calling setters and getters](./concepts.md#calling-setters-and-getters)
+- [instance methods versus class methods](./concepts.md#instance-methods-versus-class-methods)
+- [method access control](./concepts.md#method-access-control)
+- [referencing and setting instance variables vs. using getters and setters](./concepts.md#referencing-and-setting-instance-variables-vs-using-getters-and-setters)
+- [polymorphism](./concepts.md#polymorphism)
+- [encapsulation](./concepts.md#encapsulation)
+- [modules](./concepts.md#modules)
+- [method lookup path](./concepts.md#method-lookup-path)
+- [collaborator objects](./concepts.md#collaborator-objects)
+- [super](./concepts.md#super)
+
 1. What's the focus of the question? (intent)
 2. What's the most simple way I can explain this that completely addresses the intent of the question.
 
@@ -49,7 +62,7 @@ joe.set_speed = 15  # assign @speed instance variable to a value; thus updating 
 joe.run  # accessing state information (@name's value) and invoking private method speed; thus
 joe.speed  # attempt to expose behavior from outside the class; observing method access control at work
 ```
-# attr_* -> s/getters
+# attr_*
 
 - an abbreviated way of writing setter and getter methods
 - by defining `attr_*` methods, we automatically define instance variables of the same name
@@ -68,7 +81,6 @@ joel.age = 25      # setter methods always return arg
 p joel # => #<Person:0x00007fb97380c5a8 @name="Joel", @age=25>
 ```
 # calling setters and getters
-
 # instance methods versus class methods
 - both are inherited by subclasses
 
@@ -106,6 +118,7 @@ franz = Person.new("Franz")
 p Person.total_people
 [joe, sarah, franz].each(&:print_name)
 ```
+# referencing and setting instance variables vs. using getters and setters
 # polymorphism
 
 ### via class inheritance
@@ -176,7 +189,6 @@ end
 
 SportsGame.new.play([Athlete.new, Fan.new]) # informal grouping based on the fact that both
 ```
-
 # encapsulation
 
 - selectively exposing behaviors (classes and access control) and states (via methods)
@@ -266,9 +278,33 @@ rich = House.new("rich", 100)
 
 p joel > rich
 ```
+# modules
 
+
+
+
+# method lookup path
+- the ‘path’ Ruby takes while seeking to resolve a method invocation; Ruby searches for a method with the name of the invoked method, first in the class of the object we invoked the method on, then in any modules, then the superclass.
+- important because of method overriding. Say we define a method in a class and later include a module into that class that has a method of the same name as the one we defined in our class. Now lets say we want to invoke the method defined in the included module. Because of the order in which the method lookup path searches, the method we defined in our class will be found first and thus called on our object. This was not the desired behavior and underlines the importance or impact that the method lookup path has on our code.
+- also tightly related to polymorphism and inheritance.
+```ruby
+module Greetable
+  def greet
+    'hi there'
+  end
+end
+
+class Person
+  include Greetable
+  def greet
+    'well hello there good sir!'
+  end
+end
+Person.new.greet # => well hello there good sir!
+# Person#greet is found first and thus overrides Greetable#
+
+```
 # collaborator objects
-
 - any object that makes up part of the state of another object (of a different class); the mechanism by which this (formal) relationship is established is through the use of `@instance_variables`.  A collaborator object is the value referenced by another object’s instance variable
 - With regard to actual objects in memory, *collaboration* occurs when one object is added to the state of another object (i.e., when a method is invoked on an object). However, a more helpful mental model is: *the collaborative relationship exists in the design (or intention) of our code*
 - at a macro level, collaborator objects represent the connections or relationships between various composite parts of your program
@@ -310,18 +346,10 @@ class SoccerPlayer
   end
 end
 ```
-# method lookup path
-```ruby
-class Klass
-  include Enumerable
-  include Comparable
-end
 
-class UnterKlass < Klass; end
 
-UnterKlass.new.ancestors # [UnterKlass, Klass, Comparable, Enumerable, Object, Kernel, BasicObject]
-```
 # super
+
 - looks for a method with the same name as the one where it is being used within the inheritance hierarchy of the calling object's class
 - The super keyword looks up the ancestors chain for the method name where super is called
 
@@ -418,3 +446,5 @@ class Person
   end
 end
 ```
+# fake operators and equality
+# reading OO code
