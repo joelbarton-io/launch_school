@@ -375,26 +375,67 @@ Trade-offs of collaborator objects? (closely associating multiple classes)
 # # --------------- once initialized, we can access
 # p joel # => #<Person:0x00007fb97380c5a8 @name="Joel", @age=25>
 
-class Person
-  @@total_people = 0
+# class Person
+#   @@total_people = 0
 
-  def initialize(name)
+#   def initialize(name)
+#     @name = name
+#     @@total_people += 1
+#   end
+
+#   def self.total_people
+#     "total people: #{@@total_people}"
+#   end
+
+#   def print_name
+#     puts @name
+#   end
+# end
+
+# joe = Person.new("Joe")
+# sarah = Person.new("Sarah")
+# franz = Person.new("Franz")
+
+# p Person.total_people
+# [joe, sarah, franz].each(&:print_name)
+# module A
+#   def greet
+#     puts "#{self.class} named #{name} says hi!"
+#   end
+
+#   class Person
+#     include A
+#     attr_reader :name
+
+#     def initialize(name)
+#       @name = name
+#     end
+#   end
+# end
+
+# joel = A::Person.new("Joel")
+
+# joel.greet
+
+class Fugitive
+  attr_accessor :name, :age
+
+  def initialize(name, age)
     @name = name
-    @@total_people += 1
+    @age = age
   end
 
-  def self.total_people
-    "total people: #{@@total_people}"
+  def change_something
+    @name = "Abagnale"
+    @namee #if we had used a getter here, it would have thrown an error bc of our spelling error
   end
 
-  def print_name
-    puts @name
+  def change_something_else
+    @agee = 17
   end
 end
 
-joe = Person.new("Joe")
-sarah = Person.new("Sarah")
-franz = Person.new("Franz")
+frank = Fugitive.new("Frank", 21)
 
-p Person.total_people
-[joe, sarah, franz].each(&:print_name)
+p frank.change_something
+p frank.change_something_else

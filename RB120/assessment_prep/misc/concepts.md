@@ -1,4 +1,5 @@
 - [classes and objects](./concepts.md#classes-and-objects)
+- [attributes and instance variables and state](./concepts.md#attributes-and-instance-variables-and-state)
 - [attr_*](./concepts.md#attr_*)
 - [calling setters and getters](./concepts.md#calling-setters-and-getters)
 - [instance methods versus class methods](./concepts.md#instance-methods-versus-class-methods)
@@ -10,26 +11,32 @@
 - [method lookup path](./concepts.md#method-lookup-path)
 - [collaborator objects](./concepts.md#collaborator-objects)
 - [super](./concepts.md#super)
+- [fake operators and equality](./concepts.md#fake-operators-and-equality)
+- [reading OO code](./concepts.md#reading-oo-code)
+- [goal of inheritance](./concepts.md#goal-of-inheritance)
 
 1. What's the focus of the question? (intent)
 2. What's the most simple way I can explain this that completely addresses the intent of the question.
 
 # classes and objects
 ### class
-- blueprint for objects;
+- used to specify the form of an object; combining data representation and methods for accessing and modifying that data wrapped into one.
+
 - where we define an object’s attributes and behaviors -> instance_variables and instance_methods
-- can 'act' via class methods (which are inherited by subclasses)
+- can 'act' via class methods (which are inherited by all subclasses)
+- Classes are used as blueprints for objects; they're where we define an object's behaviors and attributes.
+- Ruby defines the attributes (attr getters/setters) and behaviors of its objects in classes.
+- We also define class methods inside of classes and can instantiate objects from classes via the `::new` class method. Classes can inherit the behavior of superclasses;
 ### object
 - instance of a class; has a unique state and id
+
 - instance variables track information related to the object (instance variables are scoped at the object-level)
 - the sum of which comprises its state, ‘acts’ via instance methods
 ### benefits of classes and objects
 - open up a new world of possibilities; encapsulation, polymorphic behavior, inheritance, working at a greater level of abstraction, and all the benefits of OO re: data privacy/hiding and access control
 
 - using objects allows us to think at a higher level of abstraction; users of a class don’t have to know all the implementation details, they just access the public interface of the class. This has the benefit of preventing unintentional manipulation of data or invoking methods erroneously. → encapsulation of behavior (access control)
-
 - classes allow us to model naturally hierarchical domains, group methods we want available to certain objects, implement polymorphic behavior via (class) inheritance and duck typing, and encapsulate behaviors
-
 - objects encapsulate their own state, therefore we can expose state info if we have access to instance methods since instance variables are scoped at the object level and thus are accessible to instance methods of the object in question
 
 ### implementation
@@ -62,9 +69,39 @@ joe.set_speed = 15  # assign @speed instance variable to a value; thus updating 
 joe.run  # accessing state information (@name's value) and invoking private method speed; thus
 joe.speed  # attempt to expose behavior from outside the class; observing method access control at work
 ```
-# attr_*
+# attributes and instance variables and state
+- An instance variable is named by the class, but each object created from the class creates its own copy of the instance variable, and its value contributes to the overall state of the object.
 
+- The instance variable is actually not a part of the class, and cannot be inherited. The subclass only knows about the variable name, and it uses that name as a reference to the value it points to.
+- An attribute is an instance variable name along with it's value. It only does us any good if there is either an associated getter or setter method or both.
+- The getter and setter methods are inherited, but the attribute behind these does not get inherited.
+- Every object has a state. This is the collection of all instance variables and their values as defined for an individual object. It is part of the object, and not the class, and therefore is not inherited.
+### excerpt from TRPL:
+
+"These pairs of accessor methods are known as attributes and are distinct from instance variables. The methods defined by a class may have “public,” “protected,” or “private” visibility, which affects how and where they may be invoked."
+
+### state and instance variables
+- initialization is a prerequisite for an instance variable to be part of an object's state.
+-
+```ruby
+class Parent
+  attr_accessor :name
+
+  def initialize(name)
+    @name = name
+  end
+end
+
+class Child < Parent; end
+```
+- Child INHERITS behaviors from Parent -> `name` and `initialize`
+
+- methods allow us to expose the attributes of an object since `Child` inherits the behavior of `Parent` and since this (public) behavior facilitates access to an object's attributes, we can access state information of our objects
+- if we understand attributes as the behaviors that facilitate
+
+# attr_*
 - an abbreviated way of writing setter and getter methods
+
 - by defining `attr_*` methods, we automatically define instance variables of the same name
 ```ruby
 class Person
@@ -86,10 +123,12 @@ p joel # => #<Person:0x00007fb97380c5a8 @name="Joel", @age=25>
 
 ### instance
 - defined for and called on instances of a class; available to objects of a class and any inheriting subclass’ object
+
 - mechanism by which objects are encapsulated since the only way to expose an object's state is via instance methods
 
 ### class
 - defined for and called on a classes; they are the behavior available to a class
+
 - functionality that does not pertain to individual objects of the class
 - use if the functionality doesn't deal with the states of indiv. objects
 ```ruby
@@ -119,8 +158,39 @@ p Person.total_people
 [joe, sarah, franz].each(&:print_name)
 ```
 # referencing and setting instance variables vs. using getters and setters
-# polymorphism
+From outside the class, it is impossible to directly reference instance variables since i-vars are scoped at the level of the object. This is why we need getters and setters (attributes) to facilitate exposing, accessing, and modifying values stored as state in our objects. If an accessor is public, it can be invoked both inside and outside the class by objects of that class or subclass.
 
+- within the class, acessors are preferred to explicitly accessing or assignment of instance variable
+  - more flexible and easy-to-maintain code (single point of adjustment)
+  - explicitly referencing instance variables doesn't have the built-in protection like an accessor does
+  - guard clauses; option to further mediate how some information is exposed
+  - using methods relies on sending messages which is preferred to explicit assignment
+```ruby
+class Fugitive
+  attr_accessor :name, :age
+
+  def initialize(name, age)
+    @name = name
+    @age = age
+  end
+
+  def change_something
+    @name = "Abagnale"
+    @namee # if we had used a getter here, it would have thrown an error bc of our spelling error
+  end
+
+  def change_something_else
+    @agee = 17
+  end
+end
+
+frank = Fugitive.new("Frank", 21)
+
+p frank.change_something
+p frank.change_something_else
+```
+# polymorphism
+- allows for flexibility in code in that different types can respond in different ways to the same method invocation; reduces redundancy
 ### via class inheritance
 ```ruby
 class Sport
@@ -159,13 +229,11 @@ class Running < Sport; end # sub
 ```
 ### via duck-typing
 
--> if blanking, think of a bunch of different professionals who all `work`
+- if blanking, think of a bunch of different professionals who all `work`
 
-no formal relationship between classes/types; however if they can both respond to some interface, we can use them polymorphically
-
--> A way for objects to behavior polymorphically when they do not share methods via either interface or class inheritance.
-
-The idea is that you don't need to know the type of object in order to invoke an existing method on the object-if it can respond to a method, you can invoke that method on it.
+- no formal relationship between classes/types; however if they can both respond to some interface, we can use them polymorphically
+- A way for objects to behavior polymorphically when they do not share methods via either interface or class inheritance.
+- The idea is that you don't need to know the type of object in order to invoke an existing method on the object-if it can respond to a method, you can invoke that method on it.
 
 ```ruby
 class SportsGame
@@ -190,7 +258,9 @@ end
 SportsGame.new.play([Athlete.new, Fan.new]) # informal grouping based on the fact that both
 ```
 # encapsulation
+- 'hiding something behind an interface'
 
+- 'the object is an encapsulation of state and behavior'
 - selectively exposing behaviors (classes and access control) and states (via methods)
 
 - the only way to interact with objects is by invoking their methods; instance methods are the only way we can expose information stored as state(referenced by instance variables which are scoped at the object-level).
@@ -255,7 +325,9 @@ class House
 end
 ```
 ### protected
-- when we want to work with multiple instances of a class but also want to avoid exposing a class’ interface to the rest of our program
+- working with multiple instances of a class
+
+- want to avoid exposing a class’ interface to the rest of our program
 - inside class, a `protected` instance method behaves like a `public` method, but when we are *outside* of the class, a `protected` method behaves exactly like a `private` method
 - “protected methods come in handy when we want to work with multiple instances of the same class within the same method call, but yet we don't want to expose the interface to the outside world.”
 ```ruby
@@ -279,12 +351,19 @@ rich = House.new("rich", 100)
 p joel > rich
 ```
 # modules
+- They are used in two primary capacities. One: as namespaces and two: as mixins. A module that's being used as a namespace is a container for a bunch of similar, or related classes whereas a mixin is a module that we use to give various classes desired behaviors, access to constants, and other functionality related concerns. We mix-in functionality to a class via interface inheritance. Modules cannot inherit from other modules nor can be used to instantiate objects.
 
+- A common visual distinction between the two would be that a mixin module would follow the suffix "-able" naming convention while a namespace's name would typically relate to some shared trait or enclosing purpose that the classes contained therein have.
 
+### benefits
+- Ruby’s way of implementing multiple inheritance; we can include as many `mixins` as we need
+
+- if we had two Classes of the same name that were unrelated, we could group these two classes in namespace modules to ensure that we don’t experience any name collisions and improve the organization of our code.
 
 
 # method lookup path
 - the ‘path’ Ruby takes while seeking to resolve a method invocation; Ruby searches for a method with the name of the invoked method, first in the class of the object we invoked the method on, then in any modules, then the superclass.
+
 - important because of method overriding. Say we define a method in a class and later include a module into that class that has a method of the same name as the one we defined in our class. Now lets say we want to invoke the method defined in the included module. Because of the order in which the method lookup path searches, the method we defined in our class will be found first and thus called on our object. This was not the desired behavior and underlines the importance or impact that the method lookup path has on our code.
 - also tightly related to polymorphism and inheritance.
 ```ruby
@@ -305,12 +384,14 @@ Person.new.greet # => well hello there good sir!
 
 ```
 # collaborator objects
-- any object that makes up part of the state of another object (of a different class); the mechanism by which this (formal) relationship is established is through the use of `@instance_variables`.  A collaborator object is the value referenced by another object’s instance variable
+- any object that makes up part of the state of another object (of a different class); the mechanism by which this (formal) relationship is established is through the use of `@instance_variables`
+
+- A collaborator object is the value referenced by another object’s instance variable
 - With regard to actual objects in memory, *collaboration* occurs when one object is added to the state of another object (i.e., when a method is invoked on an object). However, a more helpful mental model is: *the collaborative relationship exists in the design (or intention) of our code*
 - at a macro level, collaborator objects represent the connections or relationships between various composite parts of your program
 
-- 1. B → they modularize the problem domain into cohesive connected pieces that are more abstracted than just basic data-structures and standard library types
-2. D → they add more contingency to our code; can be harder to read/process at a glance
+- Benefit → by coupling different class' instances via collaborators, we modularize the problem domain into cohesive connected pieces that are more abstracted than just basic data-structures and standard library types
+- Detriments → they add more contingency to our code; can be harder to read/process at a glance
 ```ruby
 class SoccerBall
   attr_accessor :moving
@@ -346,10 +427,7 @@ class SoccerPlayer
   end
 end
 ```
-
-
 # super
-
 - looks for a method with the same name as the one where it is being used within the inheritance hierarchy of the calling object's class
 - The super keyword looks up the ancestors chain for the method name where super is called
 
@@ -358,6 +436,7 @@ end
     2. `super()` passes exactly zero `args` to superclass’ implementation of that method
     3. `super(*args)` passes specified args to superclass’ implementation of method
 ### super
+- passes all arguments provided it to the method in the superclass
 ```ruby
 class Card
   def greet
@@ -372,6 +451,7 @@ class HolidayCard < Card
 end
 ```
 ### super()
+- passes exactly zero arguments to the method in the superclass
 ```ruby
 class Card
   def greet
@@ -388,6 +468,7 @@ p Card.new.greet                         # 'Greetings!'
 p HolidayCard.new.greet('Merry Xmas!') # 'Seasonal Greetings! Merry Xmas!'
 ```
 ### super(*args)
+- passes `*args` to superclass method
 ```ruby
 class Card
   def greet(message)
@@ -405,6 +486,7 @@ p HolidayCard.new.greet('Merry Xmas!', "March 3rd: ") # 'March 3rd: Seasonal Gre
 ```
 # method lookup path
 - the ‘path’ Ruby takes while seeking to resolve a method invocation; Ruby searches for a method with the name of the invoked method, first in the class of the object we invoked the method on, then in any modules, then the superclass.
+
 - important because of method overriding. Say we define a method in a class and later include a module into that class that has a method of the same name as the one we defined in our class. Now lets say we want to invoke the method defined in the included module. Because of the order in which the method lookup path searches, the method we defined in our class will be found first and thus called on our object. This was not the desired behavior and underlines the importance or impact that the method lookup path has on our code.
 - also tightly related to polymorphism and inheritance.
 ```ruby
@@ -447,4 +529,30 @@ class Person
 end
 ```
 # fake operators and equality
+- many 'operators' are actually instance methods
+
+- it is very common to define a custome `==` method for user-defined classes so that we can be specific about how we implement comparisons of instances of the class
+
+- it is also common to define a custom <=> method, include Comparable and use the inherited methods from the mixin
+```ruby
+class House
+  attr_reader :price
+
+  def initialize(price)
+    @price = price
+  end
+
+  def ==(other)
+    price == other.price
+  end
+end
+
+my_house   = House.new(10)
+your_house = House.new(11)
+my_house == your_house
+```
 # reading OO code
+# goal of inheritance
+Inheritance lets us reduce writing duplicate code by only defining functionality in one place. By using classes and modules, we can establish formal relationships between various parts of our code, allowing us to define a class in terms of another class.
+- with class inheritance, we extract some common behavior to a superclass that other, more specific classes can subclass all of which have this shared behavior
+- if we only want certain subclass to have some behavior, but not all, then interface inheritance is probably the right decision since we can selectively `include` that behavior where it's needed without writing code in multiple places
