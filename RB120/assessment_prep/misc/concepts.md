@@ -50,6 +50,7 @@ joe.run  # accessing state information (@name's value) and invoking private meth
 joe.speed  # attempt to expose behavior from outside the class; observing method access control at work
 ```
 # attr_* -> s/getters
+
 - an abbreviated way of writing setter and getter methods
 - by defining `attr_*` methods, we automatically define instance variables of the same name
 ```ruby
@@ -68,8 +69,45 @@ p joel # => #<Person:0x00007fb97380c5a8 @name="Joel", @age=25>
 ```
 # calling setters and getters
 
+# instance methods versus class methods
+- both are inherited by subclasses
 
+### instance
+- defined for and called on instances of a class; available to objects of a class and any inheriting subclass’ object
+- mechanism by which objects are encapsulated since the only way to expose an object's state is via instance methods
+
+### class
+- defined for and called on a classes; they are the behavior available to a class
+- functionality that does not pertain to individual objects of the class
+- use if the functionality doesn't deal with the states of indiv. objects
+```ruby
+
+class Person
+  @@total_people = 0
+
+  def initialize(name)
+    @name = name
+    @@total_people += 1
+  end
+
+  def self.total_people
+    "total people: #{@@total_people}"
+  end
+
+  def print_name
+    puts @name
+  end
+end
+
+joe = Person.new("Joe")
+sarah = Person.new("Sarah")
+franz = Person.new("Franz")
+
+p Person.total_people
+[joe, sarah, franz].each(&:print_name)
+```
 # polymorphism
+
 ### via class inheritance
 ```ruby
 class Sport
@@ -107,9 +145,15 @@ end
 class Running < Sport; end # sub
 ```
 ### via duck-typing
-no formal relationship between classes/types; if they can both respond to some method name, we can use them polymorphically
 
-The idea is that you don't need a type in order to invoke an existing method on an object - if a method is defined on it, you can invoke it.
+-> if blanking, think of a bunch of different professionals who all `work`
+
+no formal relationship between classes/types; however if they can both respond to some interface, we can use them polymorphically
+
+-> A way for objects to behavior polymorphically when they do not share methods via either interface or class inheritance.
+
+The idea is that you don't need to know the type of object in order to invoke an existing method on the object-if it can respond to a method, you can invoke that method on it.
+
 ```ruby
 class SportsGame
   def play(attendees)
@@ -132,9 +176,13 @@ end
 
 SportsGame.new.play([Athlete.new, Fan.new]) # informal grouping based on the fact that both
 ```
+
 # encapsulation
+
 - selectively exposing behaviors (classes and access control) and states (via methods)
+
 - the only way to interact with objects is by invoking their methods; instance methods are the only way we can expose information stored as state(referenced by instance variables which are scoped at the object-level).
+- There is no way to access the instance variable directly except through the object (direct access must occur in instance methods defined within the class). This is useful because it allow us to set safeguards on data access in order to ensure it is always returned or changed in an appropriate manner.
 ```ruby
 class Car
   def initialize(speed); @speed = speed; end
@@ -167,11 +215,17 @@ end
 ```
 The methods available to an instance of `Car` comprise the public interface of the class. Via method access control, all the specific implementation details involved with how to start a car are encapsulated, meaning that we cannot call them directly on an instance of our `Car` class. This is encapsulation of behavior at the class definition level; all the specific implementation re: how to start our car is encapsulated through the use of `private` and their functionality can only be exposed within the class itself by methods within the class.
 
-# method access modifiers
+# method access control
 - access modifiers; further encapsulate behaviors
+- allows us to limit what is included in our class' public interface, which is a goal of encapsulation and OO in general
+  -> simplifies how users interact with class
+
 ### public
 - all the instance methods that comprise the public interface of a class
+
 ### private
+- doesn't allow for an explicit caller!
+
 ```ruby
 class House
   attr_reader :owner, :price
@@ -189,6 +243,9 @@ class House
 end
 ```
 ### protected
+- when we want to work with multiple instances of a class but also want to avoid exposing a class’ interface to the rest of our program
+- inside class, a `protected` instance method behaves like a `public` method, but when we are *outside* of the class, a `protected` method behaves exactly like a `private` method
+- “protected methods come in handy when we want to work with multiple instances of the same class within the same method call, but yet we don't want to expose the interface to the outside world.”
 ```ruby
 class House
   attr_reader :owner, :price
@@ -209,13 +266,15 @@ rich = House.new("rich", 100)
 
 p joel > rich
 ```
+
 # collaborator objects
+
 - any object that makes up part of the state of another object (of a different class); the mechanism by which this (formal) relationship is established is through the use of `@instance_variables`.  A collaborator object is the value referenced by another object’s instance variable
 - With regard to actual objects in memory, *collaboration* occurs when one object is added to the state of another object (i.e., when a method is invoked on an object). However, a more helpful mental model is: *the collaborative relationship exists in the design (or intention) of our code*
 - at a macro level, collaborator objects represent the connections or relationships between various composite parts of your program
 
-- 1. B → they modularize the problem domain into cohesive connected pieces that are more abstracted than just basic data-structures and primitive types
-2. D → they add more contingency to our code; can be harder to read/process
+- 1. B → they modularize the problem domain into cohesive connected pieces that are more abstracted than just basic data-structures and standard library types
+2. D → they add more contingency to our code; can be harder to read/process at a glance
 ```ruby
 class SoccerBall
   attr_accessor :moving
@@ -336,9 +395,26 @@ end
 Person.new.greet # => well hello there good sir!
 # Person#greet is found first and thus overrides Greetable#greet
 ```
-# self ???
-- within a class, outside an instance method → refers to the class it`self`
-- within an instance method → refers to the calling object (receiver)
-- special variable; describes the context of execution by referencing the object the current method is attached
+
+# self
+
+- special variable; describes the context of execution by referencing the object calling the currently executing code
 - used to disambiguate when we are calling a setter method versus initializing a new local variable within some instance method
-- a way to reference the calling object from with the class definition
+- a way of being explicit about what our program is referencing and what our intentions are as far as behavior
+```ruby
+class Person
+  self
+
+  def a_method
+    self
+  end
+
+  def self.a_class_method
+    self
+  end
+
+  def other_method(new_name)
+    self.name = new_name
+  end
+end
+```

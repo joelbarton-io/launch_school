@@ -361,16 +361,40 @@ Trade-offs of collaborator objects? (closely associating multiple classes)
 # joe.run # accessing state information (@name's value) and invoking private method speed; thus
 # joe.speed # attempting to expose behavior from outside the class and observing the benefits of our encapsulation of behavior (method access control)
 
+# class Person
+# # ---------- by defining `attr_*` methods, we automatically define instance variables of the same name
+#   attr_accessor :name, :age
+# end
+# joel = Person.new # instantiate a new Person object
+# # --------------- uninitialized instance variables reference `nil`
+# p joel.name # nil
+# p joel.age # nil
+# # --------------- use setters to initialize them
+# joel.name = "Joel" # => Joel
+# joel.age = 25      # setter methods always return arg
+# # --------------- once initialized, we can access
+# p joel # => #<Person:0x00007fb97380c5a8 @name="Joel", @age=25>
+
 class Person
-# ---------- by defining `attr_*` methods, we automatically define instance variables of the same name
-  attr_accessor :name, :age
+  @@total_people = 0
+
+  def initialize(name)
+    @name = name
+    @@total_people += 1
+  end
+
+  def self.total_people
+    "total people: #{@@total_people}"
+  end
+
+  def print_name
+    puts @name
+  end
 end
-joel = Person.new # instantiate a new Person object
-# --------------- uninitialized instance variables reference `nil`
-p joel.name # nil
-p joel.age # nil
-# --------------- use setters to initialize them
-joel.name = "Joel" # => Joel
-joel.age = 25      # setter methods always return arg
-# --------------- once initialized, we can access
-p joel # => #<Person:0x00007fb97380c5a8 @name="Joel", @age=25>
+
+joe = Person.new("Joe")
+sarah = Person.new("Sarah")
+franz = Person.new("Franz")
+
+p Person.total_people
+[joe, sarah, franz].each(&:print_name)
