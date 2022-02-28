@@ -18,3 +18,8 @@ fluffy = Pet.new(name)
 # puts fluffy      #"My name is FLUFFY."
 # puts fluffy.name #'FLUFFY'
 # puts name        #'Fluffy'
+
+# puts fluffy.name #
+# puts fluffy      #
+# puts fluffy.name #
+# puts name        #

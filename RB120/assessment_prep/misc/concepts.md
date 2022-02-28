@@ -22,6 +22,8 @@
 ### class
 - used to specify the form of an object; combining data representation and methods for accessing and modifying that data wrapped into one.
 
+- classes provide an outline of the form that an object of that class can take
+
 - where we define an object’s attributes and behaviors -> instance_variables and instance_methods
 - can 'act' via class methods (which are inherited by all subclasses)
 - Classes are used as blueprints for objects; they're where we define an object's behaviors and attributes.
@@ -190,7 +192,14 @@ p frank.change_something
 p frank.change_something_else
 ```
 # polymorphism
-- allows for flexibility in code in that different types can respond in different ways to the same method invocation; reduces redundancy
+- the ability of objects of different types to respond to the same interface
+
+- When we don't care what type of object is calling the method, we're using polymorphism.
+- **benefits**: more readable, manageable, and efficient (less redundant) code
+- allows us to treat objects of different types as a single generic type of object with respect to invocation of the common interface. In other words, there’s a real sense in which I don’t really care what the object is so long as it can respond to the same method invocation with the same number of arguments.
+- The real power of polymorphism is when we can produce different responses from a singular method call, with the response being determined by the type of object calling the method.
+- If multiple objects of different types respond to the same interface (or “message”), we’ve got polymorphism, assuming their responses have similar intentions.
+
 ### via class inheritance
 ```ruby
 class Sport
@@ -208,6 +217,7 @@ class Running < Sport
     'running stretches' # polymorphism via method overriding + inheritance
   end
 end
+[Sport.new, Basketball.new, Soccer.new, Running.new].each(&:stretch)
 ```
 ### via interface inheritance
 ```ruby
@@ -228,13 +238,6 @@ end
 class Running < Sport; end # sub
 ```
 ### via duck-typing
-
-- if blanking, think of a bunch of different professionals who all `work`
-
-- no formal relationship between classes/types; however if they can both respond to some interface, we can use them polymorphically
-- A way for objects to behavior polymorphically when they do not share methods via either interface or class inheritance.
-- The idea is that you don't need to know the type of object in order to invoke an existing method on the object-if it can respond to a method, you can invoke that method on it.
-
 ```ruby
 class SportsGame
   def play(attendees)
@@ -255,15 +258,38 @@ class Fan
   end
 end
 
-SportsGame.new.play([Athlete.new, Fan.new]) # informal grouping based on the fact that both
+class Vendor
+  def attend
+    puts "Sells hotdogs!"
+  end
+end
+
+SportsGame.new.play([Athlete.new, Fan.new, Vendor.new]) # informal grouping based on their shared interface (attend)
 ```
+- if blanking, think of a bunch of different professionals who all `work`
+
+- no formal relationship between classes/types; however if they can both respond to the same interface, we have polymorphism via duck-typing
+- A way for objects to behave polymorphically when they do not share methods via either interface or class inheritance.
+- The idea is that you don't need to know the type of object in order to invoke an existing method on the object-if it can respond to a method, you can invoke that method on it.
+
 # encapsulation
+- is achieved by creating objects and exposing interfaces
+
+- hiding pieces of functionality and data
+
+- facilitates boundaries within our code; class-level, object-level
+
+- helps to ensure data cannot be modified or changed without an obvious intent
+
+### quotes
+
 - 'hiding something behind an interface'
 
 - 'the object is an encapsulation of state and behavior'
+
 - selectively exposing behaviors (classes and access control) and states (via methods)
 
-- the only way to interact with objects is by invoking their methods; instance methods are the only way we can expose information stored as state(referenced by instance variables which are scoped at the object-level).
+- the only way to interact with objects is by invoking their methods; instance methods are the only way we can expose data (values) stored as state(referenced by instance variables which are scoped at the object-level).
 - There is no way to access the instance variable directly except through the object (direct access must occur in instance methods defined within the class). This is useful because it allow us to set safeguards on data access in order to ensure it is always returned or changed in an appropriate manner.
 ```ruby
 class Car
@@ -556,3 +582,11 @@ my_house == your_house
 Inheritance lets us reduce writing duplicate code by only defining functionality in one place. By using classes and modules, we can establish formal relationships between various parts of our code, allowing us to define a class in terms of another class.
 - with class inheritance, we extract some common behavior to a superclass that other, more specific classes can subclass all of which have this shared behavior
 - if we only want certain subclass to have some behavior, but not all, then interface inheritance is probably the right decision since we can selectively `include` that behavior where it's needed without writing code in multiple places
+
+What are some rules/guidelines when writing programs in OOP?
+
+- bundle common behaviors (classes, modules)
+- DRY code; reduce repetition
+- objects are sending and receiving messages; implementation shouldn't be that visible to our objects (explicit, hardcoded implementation: assigment of variable)
+- single responsibility for our methods (does print something or does return a meaningful value)
+- strive for using inheritance intelligently, meaningfully

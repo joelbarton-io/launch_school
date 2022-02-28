@@ -417,25 +417,168 @@ Trade-offs of collaborator objects? (closely associating multiple classes)
 
 # joel.greet
 
-class Fugitive
-  attr_accessor :name, :age
+# class Fugitive
+#   attr_accessor :name, :age
 
-  def initialize(name, age)
+#   def initialize(name, age)
+#     @name = name
+#     @age = age
+#   end
+
+#   def change_something
+#     @name = "Abagnale"
+#     @namee #if we had used a getter here, it would have thrown an error bc of our spelling error
+#   end
+
+#   def change_something_else
+#     @agee = 17
+#   end
+# end
+
+# frank = Fugitive.new("Frank", 21)
+
+# p frank.change_something
+# p frank.change_something_else
+
+# dwarf.rb
+# class Dwarf
+#   include Comparable
+
+#   def initialize(name, age, beard_strength)
+#     @name           = name
+#     @age            = age
+#     @beard_strength = beard_strength
+#   end
+
+#   attr_reader :name, :age, :beard_strength
+#   public    :name
+#   private   :age
+#   protected :beard_strength
+
+#   # Comparable module will use this comparison method for >, <, ==, etc.
+#   def <=>(other_dwarf)
+#     # One dwarf is allowed to call this method on another
+#     beard_strength <=> other_dwarf.beard_strength
+#   end
+
+#   def greet
+#     "Lo, I am #{name}, and have mined these #{age} years.\
+#        My beard is #{beard_strength} strong!"
+#   end
+
+#   def blurt
+#     # Not allowed to do this: private methods can't have an explicit receiver
+#     "My age is #{self.age}!"
+#   end
+# end
+
+# require 'pry'; pry.start
+
+
+# gloin = Dwarf.new('Gloin', 253, 7)
+# gimli = Dwarf.new('Gimli', 62,  9)
+
+# gloin > gimli         # false
+# gimli > gloin         # true
+
+# gimli.name            # 'Gimli'
+# gimli.age             # NoMethodError: private method `age'
+#                          called for #<Dwarf:0x007ff552140128>
+
+# gimli.beard_strength # NoMethodError: protected method `beard_strength'
+#                         called for #<Dwarf:0x007ff552140128>
+
+# gimli.greet          # "Lo, I am Gimli, and have mined these 62 years.\
+#                            My beard is 9 strong!"
+
+# gimli.blurt          # private method `age' called for #<Dwarf:0x007ff552140128>
+
+=begin
+What are some rules/guidelines when writing programs in OOP?
+
+- bundle common behaviors (classes, modules)
+- DRY code; reduce repetition
+- objects are sending and receiving messages; implementation shouldn't be that visible to our objects (explicit, hardcoded implementation: assigment of variable)
+- single responsibility for our methods (does print something or does return a meaningful value)
+- strive for using inheritance intelligently, meaningfully
+
+=end
+
+# class Animal
+#   def initialize(name)
+#     @name = name
+#   end
+
+#   def move
+#     puts "walks"
+#   end
+
+#   def speak
+#     puts "sounds #{@name}"
+#   end
+# end
+
+# class Dog < Animal
+
+# end
+
+# class Cat < Animal
+# end
+
+# class Fish < Animal
+#   def move
+#     puts "swim"
+#   end
+# end
+
+# class Animal
+#   def move
+#     puts "walks"
+#   end
+# end
+
+# class Dog < Animal
+#   def move
+#     puts 'boisterous vibration'
+#   end
+# end
+
+# class Cat < Animal
+#   def move
+#     puts 'disaffected saunter'
+#   end
+# end
+
+# [Animal.new, Dog.new, Cat.new].each(&:move)
+
+# module A
+#   @ivar = 'instance var in A'
+#   puts @ivar
+# end
+class Student
+  attr_reader :name, :fives, :tens, :twenties
+
+  def initialize(name, fives, tens, twenties)
     @name = name
-    @age = age
-  end
-
-  def change_something
-    @name = "Abagnale"
-    @namee #if we had used a getter here, it would have thrown an error bc of our spelling error
-  end
-
-  def change_something_else
-    @agee = 17
+    @fives = fives
+    @tens = tens
+    @twenties = twenties
   end
 end
+cam = Student.new("Cameron", 2, 2, 0)
+geoff = Student.new("Geoff", 0, 3, 0)
+phil = Student.new("Phil", 2, 2, 1)
 
-frank = Fugitive.new("Frank", 21)
+def most_money(students)
+  return students.first.name if students.size == 1
 
-p frank.change_something
-p frank.change_something_else
+  money = students.each_with_object([]) do |student, money|
+    money << [student.fives * 5, student.tens * 10, student.twenties * 20].sum
+  end
+  students[index_of(money.max)].name
+  
+end
+
+p most_money([cam, geoff, phil]) == "Phil"
+# p most_money([cam, geoff]) == "all"
+# p most_money([geoff]) == "Geoff"
