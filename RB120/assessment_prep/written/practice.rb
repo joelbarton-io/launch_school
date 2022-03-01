@@ -32,12 +32,12 @@ arr -> str -> integer -> str -> arr
 =end
 # [4, 3, 2, 5] would return [4, 3, 2, 6]
 
-def up_array(array)
-  return nil if array.empty? || array.any? { |el| el < 0 }
-  arr_as_int = array.join("").to_i
-  arr_as_int += 1
-  arr_as_int.digits.reverse
-end
-p up_array([2,3,9]) == [2,4,0]
-p up_array([4,3,2,5]) == [4,3,2,6]
-p up_array([1,-9]) == nil
+# def up_array(array)
+#   return nil if array.empty? || array.any? { |el| el < 0 }
+#   arr_as_int = array.join("").to_i
+#   arr_as_int += 1
+#   arr_as_int.digits.reverse
+# end
+# p up_array([2,3,9]) == [2,4,0]
+# p up_array([4,3,2,5]) == [4,3,2,6]
+# p up_array([1,-9]) == nil
