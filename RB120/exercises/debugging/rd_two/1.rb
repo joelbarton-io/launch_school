@@ -10,6 +10,10 @@ class Library
   def check_in(book)
     books.push(book)
   end
+
+  def display_data
+    books.each(&:to_s)
+  end
 end
 
 class Book
@@ -21,7 +25,7 @@ class Book
     @isbn = isbn
   end
 
-  def display_data
+  def to_s
     puts "---------------"
     puts "Title: #{title}"
     puts "Author: #{author}"
@@ -39,12 +43,12 @@ community_library.check_in(learn_to_program)
 community_library.check_in(little_women)
 community_library.check_in(wrinkle_in_time)
 
-community_library.books.each(&:display_data)
+community_library.display_data
 
 =begin
-Basically it's because we are trying to call an instance method defined in the Book class on an
-instance variable from another class (Library). When we try to invoke the display_data instance
-method on the library object community_library, we will get a NoMethodError. What we really want
-to do is iterate over the array referenced by @books and call display_data on each Book object,
-since display_data is a method intended to be called on Book objects.
+On line 42 of our code, we intend to display information regarding the books currently checked in to
+our community library. Instead, an exception is raised. Determine what caused this error and fix the
+code so that the data is displayed as expected.
+
+
 =end

@@ -1,3 +1,4 @@
+- [abstraction](./concepts.md#abstraction)
 - [classes and objects](./concepts.md#classes-and-objects)
 - [attributes and instance variables and state](./concepts.md#attributes-and-instance-variables-and-state)
 - [attr_*](./concepts.md#attr_*)
@@ -17,6 +18,10 @@
 
 1. What's the focus of the question? (intent)
 2. What's the most simple way I can explain this that completely addresses the intent of the question.
+# abstraction
+- In general, abstraction allows us to separate implementation from interface; complex aspects of implementation are hidden away and what we are left with is interface, or the ability to send messages and use class structures and objects.
+- the whole ability to model real-world concepts or ideas is the backbone of OOP design and this is all because of abstraction
+- the main benefits are the ability to write cleaner, more organized, less dependant code that's easier to maintain and think about at a higher level.
 
 # classes and objects
 ### class
@@ -454,13 +459,14 @@ class SoccerPlayer
 end
 ```
 # super
+- "specified arguments are then sent up the method lookup chain"
 - looks for a method with the same name as the one where it is being used within the inheritance hierarchy of the calling object's class
 - The super keyword looks up the ancestors chain for the method name where super is called
 
 - three implementations:
     1. `super` passes all `args` of its enclosing method to the superclass’ implementation
-    2. `super()` passes exactly zero `args` to superclass’ implementation of that method
-    3. `super(*args)` passes specified args to superclass’ implementation of method
+    2. `super()` passes exactly zero `args` to superclass’ implementation of the enclosing method
+    3. `super(*args)` passes specified args to a superclass’ implementation of the enclosing method
 ### super
 - passes all arguments provided it to the method in the superclass
 ```ruby

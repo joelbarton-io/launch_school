@@ -439,4 +439,164 @@ checkout.total_price(my_basket)
 # reflection: smooth process, no unexpected hiccups.
 # ShoppingBasket class collaborates with the three subclasses of Product and their objects
 # CheckoutDesk class collaborates with the ShoppingBasket class and its objects
+
+# ------------------------------------------
+
+# Without running the code, determine what the output will be.
+
+class PlayerCharacter
+  attr_reader :name, :hitpoints
+
+  def initialize(name, hitpoints)
+    @name = name
+    @hitpoints = hitpoints
+  end
+end
+
+class Barbarian < PlayerCharacter
+  def rage
+    true
+  end
+end
+
+class Summoner < PlayerCharacter
+  MANAPOINTS = 100
+
+  attr_reader :manapoints
+
+  def initialize(name, hitpoints)
+    super(name, hitpoints)
+    @manapoints = MANAPOINTS
+  end
+end
+
+conan = Barbarian.new("Conan", 50)    # works
+gandolf = Summoner.new("Gandolf", 25) # ArgumentError
+
+p conan.rage         # e->true  initially -> NoMethodError
+p gandolf.manapoints # => 100   initially -> NoMethodError
+p gandolf.hitpoints  # 25       initially -> NoMethodError
+
+
+
+
+#-----------------------------------------
+
+LOCATION = self
+
+class Parent
+  LOCATION = self
+end
+
+module A
+  module B
+    LOCATION = self
+    module C
+      class Child < Parent
+        LOCATION = self
+        def where_is_the_constant
+          LOCATION
+        end
+      end
+    end
+  end
+end
+
+instance = A::B::C::Child.new
+puts instance.where_is_the_constant
+
+# What does the last line of code output?               => A::B::C::Child
+# Comment out LOCATION in Child, what is output now?    => A::B
+# Comment out LOCATION in Module B, what is output now? => Parent
+# Comment out LOCATION in Parent, what is output now?   => main
+
+
+
+#-------------------------------
+
+
+
+# Implement the given classes so that we get the expected results
+
+class ClassLevel
+  attr_accessor :level
+
+  def initialize(level)
+    @level = level
+    @members = []
+  end
+
+  def <<(student)
+    if @members.include? student
+      puts "That student is already added!"
+    else
+      @members << student
+    end
+  end
+
+  def valedictorian
+    top_student = @members.max { |student| student.gpa }
+    puts "#{top_student.name} has the highest GPA of #{top_student.gpa}"
+  end
+
+  def members
+    @members.each do |student|
+      puts "==========="
+      puts "Name: #{student.name}"
+      puts "ID: XXX-XX-#{student.id[-3..-1]}"
+      puts "GPA: #{student.gpa}"
+      puts "==========="
+    end
+  end
+end
+
+class Student
+  include Comparable
+
+  attr_accessor :name, :id, :gpa
+
+  def initialize(name, id, gpa)
+    @name = name
+    @id = id
+    @gpa = gpa
+  end
+
+  def >(other)
+    gpa > other.gpa
+  end
+end
+
+juniors = ClassLevel.new('Juniors')
+
+anna_a = Student.new('Anna', '123-11-123', 3.85)
+bob = Student.new('Bob', '555-44-555', 3.23)
+chris = Student.new('Chris', '321-99-321', 2.98)
+david = Student.new('David', '987-00-987', 3.12)
+anna_b = Student.new('Anna', '543-33-543', 3.76)
+
+juniors << anna_a
+juniors << bob
+juniors << chris
+juniors << david
+juniors << anna_b
+
+# juniors << anna_a
+  # => "That student is already added"
+
+# puts juniors.members
+  # => ===========
+  # => Name: Anna
+  # => Id: XXX-XX-123
+  # => GPA: 3.85
+  # => ==========
+  # => ...etc (for each student)
+
+# p anna_a == anna_b
+#   # => false
+
+# p david > chris
+#   # => true
+
+# juniors.valedictorian
+#   # => "Anna has the highest GPA of 3.85"
 =end
