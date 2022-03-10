@@ -117,3 +117,50 @@ midfielder should be able to pass
 defender should be able to block
 ref wears black, can run and whistle
 =end
+
+# March 6th
+
+# class Person
+#   def initialize(name)
+#     @name = name
+#   end
+
+#   def self.make_object(name)
+#     new
+#   end
+# end
+
+# joel = Person.make_object("Joel")
+# p joel
+
+# When does accidental method overriding occur, and why? Give an example.
+
+# How does inheritance work in Ruby? When would inheritance be appropriate?
+
+# # modules & self
+# # fix the implementation to produce the correct output
+
+# module Nameable
+#   def random
+#     self.class::NAMES.sample
+#   end
+
+#   def self.names
+#     ["Tom", "Bob"]
+#   end
+# end
+
+# class Person
+#   include Nameable
+
+#   NAMES = ["Tom", "John", "Dave"]
+
+#   attr_accessor :name
+
+#   def initialize
+#     @name = random
+#   end
+# end
+
+# person = Person.new
+# p person.name # should return one of the names from the NAMES constant

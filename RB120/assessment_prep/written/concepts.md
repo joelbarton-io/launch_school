@@ -1,3 +1,4 @@
+- [OOP](./concepts.md#oop)
 - [abstraction](./concepts.md#abstraction)
 - [classes and objects](./concepts.md#classes-and-objects)
 - [attributes and instance variables and state](./concepts.md#attributes-and-instance-variables-and-state)
@@ -10,6 +11,7 @@
 - [encapsulation](./concepts.md#encapsulation)
 - [modules](./concepts.md#modules)
 - [method lookup path](./concepts.md#method-lookup-path)
+
 - [collaborator objects](./concepts.md#collaborator-objects)
 - [super](./concepts.md#super)
 - [fake operators and equality](./concepts.md#fake-operators-and-equality)
@@ -18,36 +20,47 @@
 
 1. What's the focus of the question? (intent)
 2. What's the most simple way I can explain this that completely addresses the intent of the question.
+# OOP
+
+- bundling behavior with data
+
+- objects are sending and receiving messages; implementation shouldn't be that visible to our objects (explicit, hardcoded implementation: assigment of variable)
+- single responsibility for our methods (does print something or does return a meaningful value)
+- strive to use inheritance and collaborator objects intelligently; meaningful connections
+
+## benefits
+- allows us to create containers for data; helps address issues of growing complexity by granting more fine-tuned control over where behavior and data is accessible;
+- DRY code
 # abstraction
-- In general, abstraction allows us to separate implementation from interface; complex aspects of implementation are hidden away and what we are left with is interface, or the ability to send messages and use class structures and objects.
-- the whole ability to model real-world concepts or ideas is the backbone of OOP design and this is all because of abstraction
+- enables a separation of implementation and interface; complex aspects of implementation are hidden away and what we are left with is clean, easy-to-digest interface clients of a class use
+- the whole ability to model real-world concepts or ideas is the backbone of OOP design and this is all because of abstraction (cars are complicated systems; yet easy to point at and use)
 - the main benefits are the ability to write cleaner, more organized, less dependant code that's easier to maintain and think about at a higher level.
 
 # classes and objects
 ### class
-- used to specify the form of an object; combining data representation and methods for accessing and modifying that data wrapped into one.
+- used to specify the form (mold) of an object; combining data representation and methods for accessing and modifying that data all wrapped into one.
 
-- classes provide an outline of the form that an object of that class can take
-
-- where we define an object’s attributes and behaviors -> instance_variables and instance_methods
+- where we define an object’s attributes and behaviors -> instance_variables and instance_methods as well as class methods and class variables
 - can 'act' via class methods (which are inherited by all subclasses)
 - Classes are used as blueprints for objects; they're where we define an object's behaviors and attributes.
 - Ruby defines the attributes (attr getters/setters) and behaviors of its objects in classes.
-- We also define class methods inside of classes and can instantiate objects from classes via the `::new` class method. Classes can inherit the behavior of superclasses;
+- We also define class methods inside of classes and can instantiate objects from classes via the `::new` class method.
 ### object
 - instance of a class; has a unique state and id
 
-- instance variables track information related to the object (instance variables are scoped at the object-level)
+- instance variables track information related to the object (instance variables are scoped at the object-level), each instance of a class has its own unique copy of the specified i-vars
+
 - the sum of which comprises its state, ‘acts’ via instance methods
 ### benefits of classes and objects
-- open up a new world of possibilities; encapsulation, polymorphic behavior, inheritance, working at a greater level of abstraction, and all the benefits of OO re: data privacy/hiding and access control
+- encapsulation, polymorphic behavior, inheritance, working at a greater level of abstraction, and all the benefits of OO re: data privacy/hiding and access control
 
 - using objects allows us to think at a higher level of abstraction; users of a class don’t have to know all the implementation details, they just access the public interface of the class. This has the benefit of preventing unintentional manipulation of data or invoking methods erroneously. → encapsulation of behavior (access control)
 - classes allow us to model naturally hierarchical domains, group methods we want available to certain objects, implement polymorphic behavior via (class) inheritance and duck typing, and encapsulate behaviors
 - objects encapsulate their own state, therefore we can expose state info if we have access to instance methods since instance variables are scoped at the object level and thus are accessible to instance methods of the object in question
 
 ### implementation
-- classes encapsulate common behaviors; objects encapsulate state information
+- classes store and encapsulate common behaviors; objects encapsulate state information
+
 - the only way to access an object’s internal state is thru exposing some behavior available to the instance
 ```ruby
 class Runner
@@ -199,8 +212,9 @@ p frank.change_something_else
 # polymorphism
 - the ability of objects of different types to respond to the same interface
 
-- When we don't care what type of object is calling the method, we're using polymorphism.
-- **benefits**: more readable, manageable, and efficient (less redundant) code
+## benefits
+- **benefits**: more readable, maintainable, & efficient code
+
 - allows us to treat objects of different types as a single generic type of object with respect to invocation of the common interface. In other words, there’s a real sense in which I don’t really care what the object is so long as it can respond to the same method invocation with the same number of arguments.
 - The real power of polymorphism is when we can produce different responses from a singular method call, with the response being determined by the type of object calling the method.
 - If multiple objects of different types respond to the same interface (or “message”), we’ve got polymorphism, assuming their responses have similar intentions.
@@ -271,9 +285,8 @@ end
 
 SportsGame.new.play([Athlete.new, Fan.new, Vendor.new]) # informal grouping based on their shared interface (attend)
 ```
-- if blanking, think of a bunch of different professionals who all `work`
+- no formal relationship between classes/types; however if they can both respond to the same interface and are intentionally designed to behave polymorphic, then we have polymorphism via duck-typing
 
-- no formal relationship between classes/types; however if they can both respond to the same interface, we have polymorphism via duck-typing
 - A way for objects to behave polymorphically when they do not share methods via either interface or class inheritance.
 - The idea is that you don't need to know the type of object in order to invoke an existing method on the object-if it can respond to a method, you can invoke that method on it.
 
@@ -281,10 +294,12 @@ SportsGame.new.play([Athlete.new, Fan.new, Vendor.new]) # informal grouping base
 - is achieved by creating objects and exposing interfaces
 
 - hiding pieces of functionality and data
+- *class-level*: instance methods can only be exposed on instances of the class within which they were defined* (and upon instances of subclasses!)
+- *object-level*: instance variables are encapsulated in the calling object of the method wherein they (the `@ivar`) were initialized
 
+## benefits
+- helps to ensure data cannot be modified or changed without obvious intent
 - facilitates boundaries within our code; class-level, object-level
-
-- helps to ensure data cannot be modified or changed without an obvious intent
 
 ### quotes
 
@@ -292,21 +307,19 @@ SportsGame.new.play([Athlete.new, Fan.new, Vendor.new]) # informal grouping base
 
 - 'the object is an encapsulation of state and behavior'
 
-- selectively exposing behaviors (classes and access control) and states (via methods)
+- selectively exposing behaviors (classes and access control) and states (via methods);
 
-- the only way to interact with objects is by invoking their methods; instance methods are the only way we can expose data (values) stored as state(referenced by instance variables which are scoped at the object-level).
-- There is no way to access the instance variable directly except through the object (direct access must occur in instance methods defined within the class). This is useful because it allow us to set safeguards on data access in order to ensure it is always returned or changed in an appropriate manner.
+
 ```ruby
 class Car
   def initialize(speed); @speed = speed; end
 
   def start_car # part of the public interface
-    # invoke a bunch of private methods related to starting a car
+    # invoke some private methods...
   end
 
-  def drive # part of the public interface
-    # implement drive functionality
-  end
+  def drive; end # part of the public interface
+
 
   def check_speed
     puts "You are currently going #{speed}"
@@ -328,13 +341,21 @@ end
 ```
 The methods available to an instance of `Car` comprise the public interface of the class. Via method access control, all the specific implementation details involved with how to start a car are encapsulated, meaning that we cannot call them directly on an instance of our `Car` class. This is encapsulation of behavior at the class definition level; all the specific implementation re: how to start our car is encapsulated through the use of `private` and their functionality can only be exposed within the class itself by methods within the class.
 
-# method access control
-- access modifiers; further encapsulate behaviors
-- allows us to limit what is included in our class' public interface, which is a goal of encapsulation and OO in general
-  -> simplifies how users interact with class
+## more encapsulation
+- the only way to interact with objects is by invoking their methods; instance methods are the only way we can expose data (values) stored as state(referenced by instance variables which are scoped at the object-level).
 
+- There is no way to access the instance variable directly except through the object (direct access must occur in instance methods defined within the class). This is useful because it allow us to set safeguards on data access in order to ensure it is always returned or changed in an appropriate manner.
+# method access control
+- designate the visibility of a method; encapsulation of behaviors
+- allows us to limit what is included in our class' public interface, which is a goal of encapsulation and OO in general
+## benefits
+  - simplifies interaction with class by 'hiding' underlying complexity
+
+  - Generally, it's a good idea to limit the number of methods that make up a class' public interface as it makes the class more simple to use while also preventing unintentional manipulation of data or the erroneous invocation of methods.
 ### public
 - all the instance methods that comprise the public interface of a class
+- all instance methods are public unless otherwise designated otherwise
+
 
 ### private
 - doesn't allow for an explicit caller!
@@ -358,9 +379,11 @@ end
 ### protected
 - working with multiple instances of a class
 
+- “protected methods come in handy when we want to work with multiple instances of the same class within the same method call, but yet we don't want to expose the interface to the outside world”
+- this type of visibility is most commonly implemented for comparison methods: `<=>`
 - want to avoid exposing a class’ interface to the rest of our program
 - inside class, a `protected` instance method behaves like a `public` method, but when we are *outside* of the class, a `protected` method behaves exactly like a `private` method
-- “protected methods come in handy when we want to work with multiple instances of the same class within the same method call, but yet we don't want to expose the interface to the outside world.”
+-
 ```ruby
 class House
   attr_reader :owner, :price
@@ -382,12 +405,23 @@ rich = House.new("rich", 100)
 p joel > rich
 ```
 # modules
-- They are used in two primary capacities. One: as namespaces and two: as mixins. A module that's being used as a namespace is a container for a bunch of similar, or related classes whereas a mixin is a module that we use to give various classes desired behaviors, access to constants, and other functionality related concerns. We mix-in functionality to a class via interface inheritance. Modules cannot inherit from other modules nor can be used to instantiate objects.
+- They are used in three primary capacities. One: as namespaces, two: as mixins, and three: module methods. A module that's being used as a namespace is a container for a bunch of similar, or related classes whereas a mixin is a module that we use to give various classes desired behaviors, access to constants, and other functionality related concerns. We mix-in functionality to a class via interface inheritance.
 
+- Modules cannot inherit from other modules nor can be used to instantiate objects.
 - A common visual distinction between the two would be that a mixin module would follow the suffix "-able" naming convention while a namespace's name would typically relate to some shared trait or enclosing purpose that the classes contained therein have.
 
+## used as a namespace
+```ruby
+module Sports
+  class BasketBall; end
+
+  class Soccer; end
+
+  class Running; end
+end
+```
 ### benefits
-- Ruby’s way of implementing multiple inheritance; we can include as many `mixins` as we need
+- mixins are Ruby’s way of implementing multiple inheritance; we can include as many `mixins` as we need
 
 - if we had two Classes of the same name that were unrelated, we could group these two classes in namespace modules to ensure that we don’t experience any name collisions and improve the organization of our code.
 
@@ -403,26 +437,73 @@ module Greetable
     'hi there'
   end
 end
+class Being
+  def greet
+    "*complicated airflow*"
+  end
+end
 
-class Person
+class Person < Being
   include Greetable
   def greet
     'well hello there good sir!'
   end
 end
-Person.new.greet # => well hello there good sir!
+p Person.new.greet # => well hello there good sir!
 # Person#greet is found first and thus overrides Greetable#
 
 ```
 # collaborator objects
-- any object that makes up part of the state of another object (of a different class); the mechanism by which this (formal) relationship is established is through the use of `@instance_variables`
+- any object that makes up part of the state of another object
 
-- A collaborator object is the value referenced by another object’s instance variable
-- With regard to actual objects in memory, *collaboration* occurs when one object is added to the state of another object (i.e., when a method is invoked on an object). However, a more helpful mental model is: *the collaborative relationship exists in the design (or intention) of our code*
-- at a macro level, collaborator objects represent the connections or relationships between various composite parts of your program
+- represent the connections between various actors in a program
 
-- Benefit → by coupling different class' instances via collaborators, we modularize the problem domain into cohesive connected pieces that are more abstracted than just basic data-structures and standard library types
-- Detriments → they add more contingency to our code; can be harder to read/process at a glance
+- mental model: *the collaborative relationship exists in the design (or intention) of our code*
+
+- use methods of that collaborator wherever they meet (in any context where they exist).
+```ruby
+class Library
+  attr_reader :book_shelf
+
+  def initialize
+    @book_shelf = []
+  end
+
+  def shuffle_books
+    book_shelf.shuffle!
+  end
+end
+
+class Book
+  def initialize(name, page_count)
+    @name = name
+    @page_count = page_count
+  end
+
+  def turn_page; end
+
+  def high_light; end
+end
+
+public_library = Library.new
+notw = Book.new("Name of the Wind", 775) # using collaborators helps us abstract our thinking
+public_library.book_shelf << notw
+public_library.book_shelf.first.high_light
+```
+
+- ## Benefits →
+  - modularize the problem domain into cohesive, connected abstract pieces
+
+  - [practical] we can expose an object's behaviors from within another class
+  - allows us to make meaningful associations between sections of a problem; 'HAS-A' relationships; a Library has Books
+  - this allows us to model real-world relationships; a Library can 'contain' a Book via collaboration; thus we have access to the behaviors of the Book in different contexts
+  - enables more abstract thinking; easier to communicate ideas without getting bogged down in implementation details (lateral thinking!)
+
+- ## Detriments →
+  - add more contingencies/dependancies in our code
+
+  - can be harder to read/process at a glance
+
 ```ruby
 class SoccerBall
   attr_accessor :moving
@@ -459,14 +540,15 @@ class SoccerPlayer
 end
 ```
 # super
-- "specified arguments are then sent up the method lookup chain"
-- looks for a method with the same name as the one where it is being used within the inheritance hierarchy of the calling object's class
 - The super keyword looks up the ancestors chain for the method name where super is called
 
+- used when we don't want to altogether replace some behavior but augment it by adding some additional behavior (specified in the overriding method definition) while preserving the higher up method's original behavior.
 - three implementations:
     1. `super` passes all `args` of its enclosing method to the superclass’ implementation
     2. `super()` passes exactly zero `args` to superclass’ implementation of the enclosing method
     3. `super(*args)` passes specified args to a superclass’ implementation of the enclosing method
+- "specified arguments are sent up to the method defined higher in the class hierarchy"
+
 ### super
 - passes all arguments provided it to the method in the superclass
 ```ruby
@@ -537,7 +619,38 @@ end
 Person.new.greet # => well hello there good sir!
 # Person#greet is found first and thus overrides Greetable#greet
 ```
+# constant lookup path
+- constants have lexical scope, meaning that when Ruby tries to resolve a constant lookup, it first searches all immediate enclosing lexical scopes, then if the structure that where the constant reference inherits, Ruby then searchs that structure's the inheritance hierarchy
+- often need to use the constant resolution operator `::`, which specifies a particular namespace from which to begin its search
+```ruby
+module A
+  # BEDTIME = 3
+  # def bed_time
+  #   p BEDTIME # p Child::BEDTIME
+  # end
+end
 
+BEDTIME = 11
+
+class GrandParent # looks in this class
+  BEDTIME = 6
+  include A
+  def bed_time
+    p BEDTIME # p Child::BEDTIME
+  end
+end
+
+class Parent < GrandParent
+  BEDTIME = 9
+end
+
+class Child < Parent
+  BEDTIME = 7
+end
+
+Child.new.bed_time # => 7
+
+```
 # self
 
 - special variable; describes the context of execution by referencing the object calling the currently executing code
@@ -586,13 +699,7 @@ my_house == your_house
 # reading OO code
 # goal of inheritance
 Inheritance lets us reduce writing duplicate code by only defining functionality in one place. By using classes and modules, we can establish formal relationships between various parts of our code, allowing us to define a class in terms of another class.
-- with class inheritance, we extract some common behavior to a superclass that other, more specific classes can subclass all of which have this shared behavior
+- with class inheritance, we extract some common behavior to a superclass that other, more specific types can subclass to and have access to the extracted behavior
+
 - if we only want certain subclass to have some behavior, but not all, then interface inheritance is probably the right decision since we can selectively `include` that behavior where it's needed without writing code in multiple places
 
-What are some rules/guidelines when writing programs in OOP?
-
-- bundle common behaviors (classes, modules)
-- DRY code; reduce repetition
-- objects are sending and receiving messages; implementation shouldn't be that visible to our objects (explicit, hardcoded implementation: assigment of variable)
-- single responsibility for our methods (does print something or does return a meaningful value)
-- strive for using inheritance intelligently, meaningfully
