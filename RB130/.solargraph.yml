@@ -15,7 +15,7 @@ reporters:
 formatter:
   rubocop:
     cops: safe
-    except: []
+    except: [Style/BlockComments]
     only: []
     extra_args: []
 require_paths: []

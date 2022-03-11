@@ -1,4 +1,11 @@
 =begin
+# Constant lookup vs method lookup.
+
+# Modify the below code so that we can invoke the four instance methods.
+# What are some of the differences between how Ruby resolves a reference to
+# a constant versus a method? Play around with the code by moving the
+# position of `CONSTANT`.
+
 module A
   CONSTANT = self
   def a
@@ -21,6 +28,7 @@ module A
         end
 
         class Klass
+					# write some code here!
         end
       end
     end
@@ -32,10 +40,6 @@ instance.a
 instance.b
 instance.c
 instance.d
-# What are some of the differences between constant lookup and method lookup?
-# Talk through an example of each in the above code.
-
-
 
 
 # What does the below code output? How can you fix it so we get the desired results?
