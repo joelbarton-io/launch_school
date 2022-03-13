@@ -10,7 +10,12 @@ block returns nil or false and returns an array containing the remaining element
 
 class Answer
   def drop_while(array)
-    
+    idx = 0
+    while idx < array.size && yield(array[idx])
+      idx += 1
+    end
+    array.slice(idx..)
+    # as soon as the yield is `nil` or false, slice from current
   end
 end
 
