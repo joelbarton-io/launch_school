@@ -7,8 +7,7 @@ method's implementation to determine what to do with that block arg.
 
 - we use `yield` to allow a method to pass execution control to the block
   - the yield keyword executes the block
-  - if we want to have to option of passing a method a block,
-  we can use a conditional with Kernel#block_given?
+  - if we want to have to option of passing a method a block, we can use a conditional with Kernel#block_given?
 - blocks are an 'implicit parameter' (not part of the method definition)
 - blocks can be thought of as anonymous functions
 
