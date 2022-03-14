@@ -13,6 +13,17 @@
 # rvm_rbenv
 - different ruby version managers
 - retrieves from remote lib -> downloads to local lib
+- rbenv (more conservative approach); rvm (more dramatic actions)
 # bundler
+- a ruby gem; unique to each version of ruby
+- manages dependancies (various versions of ruby or gems, etc.); tries to ensure the proper versions are used
+- relies on a file: Gemfile ; instruction file for Bundler
+- binstubs; bundler exec (prefered)
+- bundler exec: ensures that executable programs installed by Gems don't interfere with your app's requirements
+- When you update your Gemfile, you should rerun bundle install to force an update to Gemfile.lock.
+- allows us to describe exactly which Ruby version and gem version an app uses; lets us install multiple versions
+- It's easy to see the names Gemfile and Gemfile.lock and think that these files must be part of Rubygems. Bundler uses both files; it depends on Gemfile to provide information on the Gems your project uses, and it creates Gemfile.lock based on that. If you ever create your own Rubygem, you will probably use Bundler, but you don't have to. Hence, you don't need Gemfile or Gemfile.lock to create a Rubygem.
 # rake
-rbenv global 2.3.1
+- another gem; automates common tasks
+- not 'required'; but there's little point in not using it; there's always going to be tasks needing automation
+- you should use bundle exec rake whenever you use Rake with a project that uses Bundler.
