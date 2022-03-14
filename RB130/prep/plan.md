@@ -1,4 +1,4 @@
-# material
+# review
 
 - [D] read study guide
 - [] read Regex book
@@ -10,10 +10,10 @@
     - reading code
 
 - [] review basic assertions/testing syntax + preferred practices
-- []
+- [] how the various core tools work together; benefits/purpose
+- [] come up with some conceptual questions (:pending)
 
-
-# study
+# sessions
 
 - [] study with Garry 3-15
 - [] study with Arsema and James 3-15
@@ -21,9 +21,12 @@
 - [] study with Steve 3-17
 - [] study with others...
 
-
 # other
-- [] attend Gatsby seminar 3-16
+
+- [] Gatsby seminar 3-16
 - [] read chapter on procs/lambdas in TRPL
 - [] read blogs + forum post on as many subjects as possible
-- [] review testing
+- [] re-read Core Tools book
+
+- [] revisit `todolist` project file; esp. how testing works (patterns)
+
