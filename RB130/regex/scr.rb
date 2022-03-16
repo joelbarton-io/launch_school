@@ -1,6 +1,20 @@
-abcd abcd
 
-123.456.7890
-123-456-7890
-123.321.7899
-176.555-5509
+
+
+
+
+
+
+
+
+
+str =
+"
+The quick brown fox jumps over the lazy dog.
+"
+
+str =~ /lazy/
+
+str.match(/lazy/)
+
+p Regexp.last_match
