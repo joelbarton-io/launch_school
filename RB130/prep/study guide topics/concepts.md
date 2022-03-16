@@ -43,3 +43,6 @@
 # regex
 
 - [] Understand that methods and blocks can return chunks of code (closures)
+
+- Why is it necessary to use `block_given?` within a method that isn't explicitly
+defined to take a block?
