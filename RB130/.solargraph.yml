@@ -1,21 +1,14 @@
 ---
 include:
-- "**/*.rb"
-exclude:
-- spec/**/*
-- test/**/*
-- vendor/**/*
-- ".bundle/**/*"
-require: []
-domains: []
+- "RB130/**/*.rb"
 reporters:
 - rubocop
 - require_not_found
-- typecheck: strict
+- typecheck
 formatter:
   rubocop:
     cops: safe
-    except: [Style/BlockComments]
+    except: []
     only: []
     extra_args: []
 require_paths: []

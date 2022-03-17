@@ -1,5 +1,4 @@
 # implementing polymorphic behavior via class inheritance
-
 class Klass
   def initialize(name)
     @name = name
